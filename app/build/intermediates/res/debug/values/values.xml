@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/arrays.xml -->
+    <eat-comment/>
+    <string-array name="array_attenuation_control">
+        <item>0dB</item>
+        <item>10dB</item>
+        <item>20dB</item>
+        <item>30dB</item>
+    </string-array>
+    <string-array name="array_demodulation_mode">
+        <item>不解调</item>
+        <item>FM</item>
+        <item>AM</item>
+    </string-array>
+    <string-array name="array_filter_bandwidth">
+        <item>0.8KHz</item>
+        <item>1KHz</item>
+        <item>2KHz</item>
+        <item>4KHz</item>
+        <item>5KHz</item>
+        <item>6.25KHz</item>
+        <item>10KHz</item>
+        <item>12.5KHz</item>
+        <item>20KHz</item>
+        <item>25KHz</item>
+        <item>50KHz</item>
+        <item>100KHz</item>
+        <item>125KHz</item>
+        <item>250KHz</item>
+    </string-array>
+    <string-array name="array_freq_bandwidth">
+        <item>0.8KHz</item>
+        <item>1KHz</item>
+        <item>2KHz</item>
+        <item>4KHz</item>
+        <item>5KHz</item>
+        <item>6.25KHz</item>
+        <item>10KHz</item>
+        <item>12.5KHz</item>
+        <item>20KHz</item>
+        <item>25KHz</item>
+        <item>50KHz</item>
+        <item>100KHz</item>
+        <item>125KHz</item>
+        <item>250KHz</item>
+        <item>500KHz</item>
+        <item>625KHz</item>
+        <item>1MHz</item>
+        <item>1.25MHz</item>
+        <item>2.5MHz</item>
+        <item>5MHz</item>
+        <item>10MHz</item>
+        <item>20MHz</item>
+    </string-array>
+    <string-array name="array_sound">
+        <item>静音</item>
+        <item>语音播报</item>
+        <item>接收机声音</item>
+    </string-array>
+    <string-array name="array_squelch_threshold">
+        <item>打开</item>
+        <item>关闭</item>
+    </string-array>
+    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/attr.xml -->
+    <eat-comment/>
+    <attr format="dimension" name="borderRadius"/>
+    <attr format="reference" name="src"/>
+    <attr name="type">
+        <enum name="circle" value="0"/>
+        <enum name="round" value="1"/>
+    </attr>
+    <declare-styleable name="CustomImageView"><attr name="borderRadius"/><attr name="type"/><attr name="src"/></declare-styleable>
+    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/dimens.xml -->
+    <eat-comment/>
+    <dimen name="activity_horizontal_margin">0dp</dimen>
+    <dimen name="activity_vertical_margin">0dp</dimen>
+    <dimen name="param_setting_padding_bottom">0dp</dimen>
+    <dimen name="param_setting_padding_left">5dp</dimen>
+    <dimen name="param_setting_padding_right">5dp</dimen>
+    <dimen name="param_setting_padding_top">5dp</dimen>
+    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="ButtonTextClose">X</string>
+    <string name="ButtonTextDot">.</string>
+    <string name="ButtonTextDoubleZero">00</string>
+    <string name="ButtonTextEight">8</string>
+    <string name="ButtonTextFive">5</string>
+    <string name="ButtonTextFour">4</string>
+    <string name="ButtonTextGHZ">GHz</string>
+    <string name="ButtonTextKHZ">KHz</string>
+    <string name="ButtonTextMHZ">MHz</string>
+    <string name="ButtonTextNine">9</string>
+    <string name="ButtonTextNo">否</string>
+    <string name="ButtonTextOne">1</string>
+    <string name="ButtonTextSeven">7</string>
+    <string name="ButtonTextSix">6</string>
+    <string name="ButtonTextThree">3</string>
+    <string name="ButtonTextTwo">2</string>
+    <string name="ButtonTextYes">是</string>
+    <string name="ButtonTextZero">0</string>
+    <string name="ButtonTextback"><![CDATA[<<]]></string>
+    <string name="about">关于</string>
+    <string name="action_settings">Settings</string>
+    <string name="app_name">便携式设备</string>
+    <string name="attenuation_control">衰减控制</string>
+    <string name="cancel">取消</string>
+    <string name="center_freq">中心频率</string>
+    <string name="company">成都零点科技有限公司</string>
+    <string name="demodulation_mode">解调模式</string>
+    <string name="device_conn_err">设备断开链接</string>
+    <string name="device_conn_ok">设备连接成功</string>
+    <string name="error">不支持语音播报</string>
+    <string name="filter_bandwidth">滤波带宽</string>
+    <string name="freq_bandwidth">频谱带宽</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="install">安装</string>
+    <string name="install_tip">设备不支持中文语用播报，点击安装按钮完成中文语音的安装</string>
+    <string name="offlinemap">离线地图</string>
+    <string name="scan">scan</string>
+    <string name="setting">设置</string>
+    <string name="setting_tip">中文语音包已经安装完成，点击设置，完成操作</string>
+    <string name="single">single</string>
+    <string name="sound">声音</string>
+    <string name="sound_title">声音</string>
+    <string name="squelch_threshold">静噪门限</string>
+    <string name="title_activity_about">关于</string>
+    <string name="title_activity_dialog">对话框</string>
+    <string name="title_activity_freq_scan">频段扫描</string>
+    <string name="title_activity_map">地图</string>
+    <string name="title_activity_param__dialog">参数设置</string>
+    <string name="title_activity_single_measure">单频测量</string>
+    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="GridButtonText" parent="NumberButtonText">
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="NumberButtonText">
+        <item name="android:layout_width">63dp</item>
+        <item name="android:layout_height">63dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ff000000</item>
+        <item name="android:background">@drawable/number_selector</item>
+    </style>
+    <style name="StyleListView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:divider">@drawable/divider</item>
+
+    </style>
+    <style name="StyleListViewItem">
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#ff000000</item>
+    </style>
+    <style name="StyleTable">
+        <item name="android:layout_margin">0.5dp</item>
+        <item name="android:background">@drawable/table_frame_gray</item>
+    </style>
+    <style name="StyleTableTitle">
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+    <style name="StyleTableValue">
+        <item name="android:layout_weight">1</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#FFA35D1B</item>
+        <item name="android:layout_gravity">left</item>
+        <item name="android:checkable">true</item>
+        <item name="android:background">@drawable/param_selector</item>
+    </style>
+</resources>

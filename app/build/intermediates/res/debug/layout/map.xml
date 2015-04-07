@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.ldkj.portable.activitys.Map">
+
+    <com.amap.api.maps.MapView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_map_param"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/param_selector">
+
+        <TextView
+            android:id="@+id/mapfreq"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/maplevel"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="40sp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/colorbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/colorbar"
+        android:visibility="invisible"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="39dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="7dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/compassMap"
+            android:layout_width="39dp"
+            android:layout_height="39dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_compass"
+            android:onClick="btnOnClick"
+            android:background="@drawable/map_icon_selector_broom"/>
+
+        <ImageButton
+            android:id="@+id/broomMap"
+            android:layout_width="39dp"
+            android:layout_height="39dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_delete"
+            android:onClick="btnOnClick"
+            android:background="@drawable/map_icon_selector_broom"/>
+
+        <CheckBox
+            android:id="@+id/drawline"
+            android:layout_width="39dp"
+            android:layout_height="39dp"
+            android:button="@drawable/ic_myplaces"
+            android:background="@drawable/map_icon_check_selector"/>
+    </LinearLayout>
+
+	<ImageButton android:id="@+id/sound_map"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+	    android:src="@drawable/sound_on"
+	    android:onClick="OnclickShowSelect"
+	    android:background="@drawable/map_icon_selector_sound"/>
+</RelativeLayout>
+<!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/layout/map.xml -->

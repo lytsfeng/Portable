@@ -1,0 +1,58 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
+        <!-- Customize your theme here. -->
+    </style>
+
+
+    <style name="StyleListView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:divider">@drawable/divider</item>
+
+    </style>
+    <style name="StyleListViewItem">
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#ff000000</item>
+    </style>
+
+    <style name="NumberButtonText">
+        <item name="android:layout_width">63dp</item>
+        <item name="android:layout_height">63dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ff000000</item>
+        <item name="android:background">@drawable/number_selector</item>
+    </style>
+    <style name="GridButtonText" parent="NumberButtonText">
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="StyleTable">
+        <item name="android:layout_margin">0.5dp</item>
+        <item name="android:background">@drawable/table_frame_gray</item>
+    </style>
+    <style name="StyleTableTitle">
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+    <style name="StyleTableValue">
+        <item name="android:layout_weight">1</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#FFA35D1B</item>
+        <item name="android:layout_gravity">left</item>
+        <item name="android:checkable">true</item>
+        <item name="android:background">@drawable/param_selector</item>
+    </style>
+
+</resources>

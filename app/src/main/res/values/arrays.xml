@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+     <string-array name="array_demodulation_mode">
+        <item>不解调</item>
+        <item>FM</item>
+        <item>AM</item>
+    </string-array>
+    <string-array name="array_squelch_threshold">
+        <item>打开</item>
+        <item>关闭</item>
+    </string-array>
+    <string-array name="array_sound">
+        <item>静音</item>
+        <item>语音播报</item>
+        <item>接收机声音</item>
+    </string-array>
+    <string-array name="array_attenuation_control">
+        <item>0dB</item>
+        <item>10dB</item>
+        <item>20dB</item>
+        <item>30dB</item>
+    </string-array>
+    <string-array name="array_filter_bandwidth">
+        <item>0.8KHz</item>
+        <item>1KHz</item>
+        <item>2KHz</item>
+        <item>4KHz</item>
+        <item>5KHz</item>
+        <item>6.25KHz</item>
+        <item>10KHz</item>
+        <item>12.5KHz</item>
+        <item>20KHz</item>
+        <item>25KHz</item>
+        <item>50KHz</item>
+        <item>100KHz</item>
+        <item>125KHz</item>
+        <item>250KHz</item>
+    </string-array>
+    <string-array name="array_freq_bandwidth">
+        <item>0.8KHz</item>
+        <item>1KHz</item>
+        <item>2KHz</item>
+        <item>4KHz</item>
+        <item>5KHz</item>
+        <item>6.25KHz</item>
+        <item>10KHz</item>
+        <item>12.5KHz</item>
+        <item>20KHz</item>
+        <item>25KHz</item>
+        <item>50KHz</item>
+        <item>100KHz</item>
+        <item>125KHz</item>
+        <item>250KHz</item>
+        <item>500KHz</item>
+        <item>625KHz</item>
+        <item>1MHz</item>
+        <item>1.25MHz</item>
+        <item>2.5MHz</item>
+        <item>5MHz</item>
+        <item>10MHz</item>
+        <item>20MHz</item>
+    </string-array>
+</resources>
