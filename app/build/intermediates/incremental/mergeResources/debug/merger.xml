@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="22.0.0"><source path="/home/john/workspace/company/Portable/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.0.0/res"/></dataSet><dataSet config="main"><source path="/home/john/workspace/company/Portable/app/src/main/res"><file path="/home/john/workspace/company/Portable/app/src/main/res/values/arrays.xml" qualifiers=""><string-array name="array_freq_bandwidth">
+<merger version="3"><dataSet config="main"><source path="/home/john/workspace/company/Portable/app/src/main/res"><file path="/home/john/workspace/company/Portable/app/src/main/res/values/arrays.xml" qualifiers=""><string-array name="array_freq_bandwidth">
         <item>0.8KHz</item>
         <item>1KHz</item>
         <item>2KHz</item>
