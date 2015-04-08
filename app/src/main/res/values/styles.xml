@@ -39,15 +39,15 @@
         <item name="android:background">@drawable/table_frame_gray</item>
     </style>
     <style name="StyleTableTitle">
-        <item name="android:paddingRight">5dp</item>
-        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">3dp</item>
+        <item name="android:paddingLeft">3dp</item>
         <item name="android:textSize">12sp</item>
         <item name="android:layout_gravity">center_vertical</item>
     </style>
     <style name="StyleTableValue">
         <item name="android:layout_weight">1</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">3dp</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">#FFA35D1B</item>
         <item name="android:layout_gravity">left</item>

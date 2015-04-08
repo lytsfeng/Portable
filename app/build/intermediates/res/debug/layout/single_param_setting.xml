@@ -87,6 +87,23 @@
             android:onClick="OnclickShowSelect"/>
 
     </TableRow>
+
+    <TableRow
+        style="@style/StyleTable">
+
+        <TextView
+            style="@style/StyleTableTitle"
+            android:text="@string/level_avg"
+            />
+
+        <TextView
+            android:id="@+id/level_avg"
+            style="@style/StyleTableValue"
+            android:text="0"
+            android:clickable="true"
+            android:onClick="OnclickShowSelect"/>
+
+    </TableRow>
     
    <TableRow
         style="@style/StyleTable">
@@ -110,7 +127,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textSize="50dp"
+        android:textSize="80sp"
+        android:textColor="#ff189800"
         />
 
 

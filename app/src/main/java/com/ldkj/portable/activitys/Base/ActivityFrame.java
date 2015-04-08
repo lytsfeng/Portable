@@ -68,10 +68,6 @@ public abstract class ActivityFrame extends ActivityBase implements
 		init();
 		AddListener();
 		setMap(isMap);
-
-		// 检查TTS数据是否已经安装并且可用
-//
-//		speech = new TextToSpeech(this, this);
 	}
 
 	private void init() {

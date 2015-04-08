@@ -1,5 +1,7 @@
 package com.ldkj.portable.controls.map;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -44,9 +46,13 @@ public class MapManager implements LocationSource, AMapLocationListener {
 
 	private final static int CHECK_POSITION_INTERVAL = 6 * 1000; // 重新获取位置信息的时间间隔
 	private final static int CHECK_POSITION_DISTANCE = 20; // 重新获取位置信息的距离间隔
+	private final static String LOCATION_CONFIG_NAME = "com_ldkj_portable_location";
+	private final static String LOCATION_LATITUDE  = "latitude";
+	private final static String LOCATION_LONGITUDE = "longitude";
 
 	private OnLocationChangedListener mListener;
 	private LocationManagerProxy mAMapLocationManager;
+	private SharedPreferences preferences;
 
 	private boolean isshowLine = false;
 	public boolean isChage = true;
@@ -124,11 +130,13 @@ public class MapManager implements LocationSource, AMapLocationListener {
 	private static final double DIS = 20; // 两点之间的最小距离
 
 	private void SetMapMarker(AMapLocation location) {
+		LatLng _latLng ;
 		if (location == null) {
-			return;
+			_latLng = getLastLocation();
+		}else {
+			_latLng = new LatLng(location.getLatitude(),
+					location.getLongitude());
 		}
-		LatLng _latLng = new LatLng(location.getLatitude(),
-				location.getLongitude());
 		if (latLng != null) {
 
 			if (AMapUtils.calculateLineDistance(latLng, _latLng) < DIS) {
@@ -137,6 +145,7 @@ public class MapManager implements LocationSource, AMapLocationListener {
 		}
 		isChage = true;
 		latLng = _latLng;
+		saveLocation();
 		AddMarker(R.drawable.error);
 		SetCompass();
 		show();
@@ -183,9 +192,8 @@ public class MapManager implements LocationSource, AMapLocationListener {
 	}
 
 	public void SetCompass() {
-		if (latLng != null) {
-			aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
-		}
+		getLastLocation();
+		aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
 	}
 
 	@Override
@@ -196,7 +204,7 @@ public class MapManager implements LocationSource, AMapLocationListener {
 			mAMapLocationManager = LocationManagerProxy.getInstance(single);
 			mAMapLocationManager.requestLocationUpdates(
 			/* LocationProviderProxy.AMapNetwork */
-			LocationManagerProxy.GPS_PROVIDER, CHECK_POSITION_INTERVAL,
+					LocationManagerProxy.GPS_PROVIDER, CHECK_POSITION_INTERVAL,
 					CHECK_POSITION_DISTANCE, this);
 		}
 	}
@@ -236,5 +244,34 @@ public class MapManager implements LocationSource, AMapLocationListener {
 	public void onProviderDisabled(String provider) {
 
 	}
+
+
+
+	private void openPreferences(){
+		if(preferences == null){
+			preferences = single.getSharedPreferences(LOCATION_CONFIG_NAME, Context.MODE_APPEND);
+		}
+	}
+
+	private LatLng getLastLocation(){
+		openPreferences();
+		String _Lat = preferences.getString(LOCATION_LATITUDE,"30.67").trim();
+		String _lon = preferences.getString(LOCATION_LONGITUDE,"104.06").trim();
+		LatLng _latLng = new LatLng(Double.parseDouble(_Lat),Double.parseDouble(_lon));
+		latLng = _latLng;
+		return _latLng;
+	}
+
+	private void saveLocation(){
+		if(latLng == null){
+			return;
+		}
+		openPreferences();
+		SharedPreferences.Editor _edit = preferences.edit();
+		_edit.putString(LOCATION_LATITUDE,latLng.latitude+"");
+		_edit.putString(LOCATION_CONFIG_NAME,latLng.longitude+"");
+		_edit.commit();
+	}
+
 
 }

@@ -2,7 +2,9 @@ package com.ldkj.portable.activitys;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Queue;
 
 import org.dom4j.DocumentException;
 
@@ -34,6 +36,7 @@ import com.ldkj.portable.R;
 import com.ldkj.portable.activitys.Base.ActivityFrame;
 import com.ldkj.portable.beans.DeviceConfig;
 import com.ldkj.portable.beans.SingleBean;
+import com.ldkj.portable.controls.DownLoadAndInstallApkDialog;
 import com.ldkj.portable.controls.Spectrum;
 import com.ldkj.portable.controls.base.DialogBase;
 import com.ldkj.portable.controls.map.MapManager;
@@ -79,6 +82,7 @@ public class Single extends ActivityFrame implements
 	private static final String PREFERENCESCHECKKEY = "Checked";
 	private static final String PREFERENCESSOUNDKEY = "sound";
 	private static final String PREFERENCESDEVICEKEY = "device";
+	private static final String PREFERENCESLEVELAVGCOUNT = "level_avg_count";
 
 	private boolean isSound = false;
 	private boolean isDeviceSound = true;
@@ -135,7 +139,7 @@ public class Single extends ActivityFrame implements
 				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView,
-							boolean isChecked) {
+												 boolean isChecked) {
 						showLine(isChecked);
 						preferences.edit()
 								.putBoolean(PREFERENCESCHECKKEY, isChecked)
@@ -150,6 +154,10 @@ public class Single extends ActivityFrame implements
 		isSound = preferences.getBoolean(PREFERENCESSOUNDKEY, false);
 		isDeviceSound = preferences.getBoolean(PREFERENCESDEVICEKEY, true);
 		setSoundBtnImage("");
+		avgCount = preferences.getInt(PREFERENCESLEVELAVGCOUNT,1);
+
+		((TextView)findViewById(R.id.level_avg)).setText((avgCount == 1 ? "实时" : avgCount)+"");
+
 		// showLine(drawLineBox.isChecked());
 		// singleThreadPool = Executors.newSingleThreadExecutor();
 	}
@@ -191,6 +199,9 @@ public class Single extends ActivityFrame implements
 		case R.id.sound_map:
 		case R.id.sound_param:
 			ShowSelectDialog(_resId, R.array.array_sound);
+			break;
+		case R.id.level_avg:
+			ShowSelectDialog(_resId,R.array.levelavg);
 			break;
 		default:
 			break;
@@ -299,6 +310,9 @@ public class Single extends ActivityFrame implements
 			setSoundBtnImage(p_Number);
 			isInit = true;
 			break;
+			case R.id.level_avg:
+				setLevelCount(p_Number);
+				break;
 		}
 
 		if (!isInit) {
@@ -312,6 +326,8 @@ public class Single extends ActivityFrame implements
 		}
 
 	}
+
+
 
 	private ServiceConnection connection = new ServiceConnection() {
 		@Override
@@ -339,6 +355,7 @@ public class Single extends ActivityFrame implements
 			return null;
 	}
 
+	private String oldLevel = "";
 	/**
 	 * 开始单频侧脸
 	 */
@@ -373,8 +390,9 @@ public class Single extends ActivityFrame implements
 					}
 					byte[] _IQ = readCmd(Util.IQMDATA1);
 					if (_IQ != null) {
+						String _newLevel = getLevelAvg(Util.getLevel(_IQ));
 						handler.obtainMessage(Util.MSG_CMD_TCP_RECEIVE_IQ,
-								Util.getLevel(_IQ)).sendToTarget();
+									_newLevel).sendToTarget();
 					}
 				}
 			}
@@ -398,10 +416,13 @@ public class Single extends ActivityFrame implements
 	 * @param pValue
 	 */
 	private void setText(String pValue) {
-		if (isMap) {
-			mapLevel.setText(pValue);
-		} else {
-			level.setText(pValue);
+
+		if(!oldLevel.equalsIgnoreCase(pValue)){
+			if (isMap) {
+				mapLevel.setText(pValue);
+			} else {
+				level.setText(pValue);
+			}
 		}
 		if(isSound){
 			if (speech != null && !speech.isSpeaking()) {  
@@ -495,12 +516,10 @@ public class Single extends ActivityFrame implements
 			switch (msg.what) {
 			case Util.MSG_CMD_TCP_RECEIVE_SPEC:
 				main.get().drawSpec(msg.obj);
-
 				break;
 			case Util.MSG_CMD_TCP_RECEIVE_IQ:
 				mapManager.AddMarker(R.drawable.runenter);
-				double _Value = (Double) msg.obj;
-				main.get().setText(String.format("%.2f", _Value));
+				main.get().setText((String)msg.obj);
 				break;
 			}
 		}
@@ -549,6 +568,40 @@ public class Single extends ActivityFrame implements
 			level.setTextSize(140);
 			isSpectrumShow = false;
 		}
+	}
+
+	private Queue<Double> levels = new ArrayDeque<Double>();
+	private int avgCount = 1;
+	private double levelSum = 0;
+	public String getLevelAvg(double plevel){
+
+		if(levelSum == 0){
+			levels.clear();
+		}
+		if(avgCount == 1){
+			return  String.format("%.0f",plevel);
+		}
+		double _avg = 0;
+		int _listSize = levels.size();
+		if (_listSize >= avgCount){
+				double _tmp = levels.poll();
+				levelSum -= _tmp;
+				_listSize--;
+		}
+		levels.add(plevel);
+		levelSum += plevel;
+		_listSize += 1;
+		return  String.format("%.0f",levelSum / _listSize);
+	}
+
+	private void setLevelCount(String p_Number) {
+		if(!Util.isNumeric(p_Number.trim())){
+			avgCount = 1;
+		}else {
+			avgCount = Integer.parseInt(p_Number.trim());
+		}
+		preferences.edit().putInt(PREFERENCESLEVELAVGCOUNT,avgCount).commit();
+		levelSum = 0;
 	}
 	
 }

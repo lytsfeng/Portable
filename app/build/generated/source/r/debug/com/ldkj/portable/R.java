@@ -15,6 +15,7 @@ public final class R {
         public static final int array_freq_bandwidth=0x7f040003;
         public static final int array_sound=0x7f040004;
         public static final int array_squelch_threshold=0x7f040005;
+        public static final int levelavg=0x7f040006;
     }
     public static final class attr {
         /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
@@ -136,6 +137,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int item_product_product_serial_number=0x7f0a0021;
         public static final int item_product_product_type=0x7f0a0020;
         public static final int item_software_version=0x7f0a0022;
+        public static final int level_avg=0x7f0a0039;
         public static final int linearLayout_map=0x7f0a0006;
         public static final int linearLayout_map_param=0x7f0a0027;
         public static final int linearLayout_single=0x7f0a0003;
@@ -143,16 +145,16 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int map=0x7f0a0026;
         public static final int mapfreq=0x7f0a0028;
         public static final int maplevel=0x7f0a0029;
-        public static final int menu_about=0x7f0a003e;
-        public static final int menu_map=0x7f0a003b;
-        public static final int menu_offlineMap=0x7f0a003d;
-        public static final int menu_single=0x7f0a003c;
+        public static final int menu_about=0x7f0a003f;
+        public static final int menu_map=0x7f0a003c;
+        public static final int menu_offlineMap=0x7f0a003e;
+        public static final int menu_single=0x7f0a003d;
         public static final int param=0x7f0a0005;
         public static final int radio_list_tv=0x7f0a0025;
         public static final int round=0x7f0a0001;
-        public static final int single_level=0x7f0a003a;
+        public static final int single_level=0x7f0a003b;
         public static final int sound_map=0x7f0a002e;
-        public static final int sound_param=0x7f0a0039;
+        public static final int sound_param=0x7f0a003a;
         public static final int spectrum=0x7f0a0004;
         public static final int txtDisplay=0x7f0a000b;
     }
@@ -211,20 +213,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int hello_world=0x7f060020;
         public static final int install=0x7f060021;
         public static final int install_tip=0x7f060022;
-        public static final int offlinemap=0x7f060023;
-        public static final int scan=0x7f060024;
-        public static final int setting=0x7f060025;
-        public static final int setting_tip=0x7f060026;
-        public static final int single=0x7f060027;
-        public static final int sound=0x7f060028;
-        public static final int sound_title=0x7f060029;
-        public static final int squelch_threshold=0x7f06002a;
-        public static final int title_activity_about=0x7f06002b;
-        public static final int title_activity_dialog=0x7f06002c;
-        public static final int title_activity_freq_scan=0x7f06002d;
-        public static final int title_activity_map=0x7f06002e;
-        public static final int title_activity_param__dialog=0x7f06002f;
-        public static final int title_activity_single_measure=0x7f060030;
+        public static final int level_avg=0x7f060023;
+        public static final int offlinemap=0x7f060024;
+        public static final int scan=0x7f060025;
+        public static final int setting=0x7f060026;
+        public static final int setting_tip=0x7f060027;
+        public static final int single=0x7f060028;
+        public static final int sound=0x7f060029;
+        public static final int sound_title=0x7f06002a;
+        public static final int squelch_threshold=0x7f06002b;
+        public static final int title_activity_about=0x7f06002c;
+        public static final int title_activity_dialog=0x7f06002d;
+        public static final int title_activity_freq_scan=0x7f06002e;
+        public static final int title_activity_map=0x7f06002f;
+        public static final int title_activity_param__dialog=0x7f060030;
+        public static final int title_activity_single_measure=0x7f060031;
     }
     public static final class style {
         /**  Customize your theme here. 

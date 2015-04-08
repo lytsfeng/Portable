@@ -50,8 +50,8 @@
     <string name="install_tip">设备不支持中文语用播报，点击安装按钮完成中文语音的安装</string>
     <string name="setting_tip">中文语音包已经安装完成，点击设置，完成操作</string>
     <string name="error">不支持语音播报</string>
+    <string name="level_avg">电平平均</string>
 
-   
 
     <!-- TODO: Remove or change this placeholder text -->
 
