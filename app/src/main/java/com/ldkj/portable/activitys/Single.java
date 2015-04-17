@@ -62,6 +62,10 @@ public class Single extends ActivityFrame implements
 	private TextView soundparamText;
 	private Typeface typeface;
 
+
+
+
+
 	private LinearLayout linearLayoutSpectrum;
 
 	private DeviceConfig config;
