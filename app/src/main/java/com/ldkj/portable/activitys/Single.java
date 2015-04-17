@@ -541,8 +541,6 @@ public class Single extends ActivityFrame implements
         } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             linearLayoutSpectrum.setVisibility(View.GONE);
             if (chartView != null) {
-
-//                linearLayoutSpectrum.removeView(chartView);
                 chartView.setVisibility(View.GONE);
             }
             level.setTextSize(140);
