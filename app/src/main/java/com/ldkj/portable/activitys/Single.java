@@ -1,13 +1,5 @@
 package com.ldkj.portable.activitys;
 
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Queue;
-
-import org.dom4j.DocumentException;
-
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -36,9 +28,8 @@ import com.ldkj.portable.R;
 import com.ldkj.portable.activitys.Base.ActivityFrame;
 import com.ldkj.portable.beans.DeviceConfig;
 import com.ldkj.portable.beans.SingleBean;
-import com.ldkj.portable.controls.DownLoadAndInstallApkDialog;
-import com.ldkj.portable.controls.Spectrum;
 import com.ldkj.portable.controls.base.DialogBase;
+import com.ldkj.portable.controls.charts.ChartView;
 import com.ldkj.portable.controls.map.MapManager;
 import com.ldkj.portable.services.ProtableService;
 import com.ldkj.portable.services.base.Callback;
@@ -47,561 +38,573 @@ import com.ldkj.portable.tools.Util;
 import com.ldkj.portable.xmlparsers.DeviceConfigParser;
 import com.ldkj.portable.xmlparsers.ParamParser;
 
+import org.dom4j.DocumentException;
+
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Queue;
+
 public class Single extends ActivityFrame implements
-		DialogBase.OnNumberDialogListener, Callback {
+        DialogBase.OnNumberDialogListener, Callback {
 
-	private Spectrum spectrum;
+    private static final String MAKERKEY = "makerkey";
+    private static final String PREFERENCESNAME = "com_ldkj_portable_activitys_single";
+    private static final String PREFERENCESCHECKKEY = "Checked";
+    private static final String PREFERENCESSOUNDKEY = "sound";
+    private static final String PREFERENCESDEVICEKEY = "device";
+    private static final String PREFERENCESLEVELAVGCOUNT = "level_avg_count";
+    public SharedPreferences preferences;
+    private ChartView spectrum;
+    private ProtableService service = null;
+    private TextView level;
+    private TextView mapLevel;
+    private TextView mapFreq;
+    private CheckBox drawLineBox;
+    private ImageButton soundBtn;
+    private TextView soundparamText;
+    private Typeface typeface;
+    private LinearLayout linearLayoutSpectrum;
+    private DeviceConfig config;
+    private SingleBean singleBean;
+    private ParamParser paramParser;
+    private MapView mapView;
+    private MapManager mapManager;
+    private boolean isReadSpac = false;
+    private boolean isSpectrumShow = false;
+    private MyHandler handler;
+    private boolean isSound = false;
+    private boolean isDeviceSound = true;
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            service = ((ProtableService.LocalBinder) binder).getService();
+            service.addCallback(Single.this);
+            service.setSound(isDeviceSound);
+        }
 
-	private ProtableService service = null;
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            service = null;
+        }
+    };
+    private String oldLevel = "";
+    private View chartView = null;
+    private Queue<Double> levels = new ArrayDeque<Double>();
+    private int avgCount = 1;
+    private double levelSum = 0;
 
-	private TextView level;
-	private TextView mapLevel;
-	private TextView mapFreq;
-	private CheckBox drawLineBox;
-	private ImageButton soundBtn;
-	private TextView soundparamText;
-	private Typeface typeface;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-	private LinearLayout linearLayoutSpectrum;
+        bindService(new Intent(this, ProtableService.class), connection,
+                BIND_AUTO_CREATE);
+        initValue();
+        if (savedInstanceState != null) {
+            ArrayList<CircleOptions> parcelableArrayList = savedInstanceState
+                    .getParcelableArrayList(MAKERKEY);
+            mapManager.setCircles(parcelableArrayList);
+        }
 
-	private DeviceConfig config;
-	private SingleBean singleBean;
-	private ParamParser paramParser;
-
-	private MapView mapView;
-	private MapManager mapManager;
-	public SharedPreferences preferences;
-
-	private boolean isReadSpac = false;
-	private boolean isSpectrumShow = false;
-
-	private MyHandler handler;
-
-	private static final String MAKERKEY = "makerkey";
-	private static final String PREFERENCESNAME = "com_ldkj_portable_activitys_single";
-	private static final String PREFERENCESCHECKKEY = "Checked";
-	private static final String PREFERENCESSOUNDKEY = "sound";
-	private static final String PREFERENCESDEVICEKEY = "device";
-	private static final String PREFERENCESLEVELAVGCOUNT = "level_avg_count";
-
-	private boolean isSound = false;
-	private boolean isDeviceSound = true;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		bindService(new Intent(this, ProtableService.class), connection,
-				BIND_AUTO_CREATE);
-		initValue();
-		if (savedInstanceState != null) {
-			ArrayList<CircleOptions> parcelableArrayList = savedInstanceState
-					.getParcelableArrayList(MAKERKEY);
-			mapManager.setCircles(parcelableArrayList);
-		}
-
-		mapView.onCreate(savedInstanceState);
-		
-		
-	}
-
-	/**
-	 * 初始化数据
-	 */
-	private void initValue() {
-		typeface = Typeface.createFromAsset(getAssets(), "fonts/DS-DIGIT.TTF");
-		linearLayoutSpectrum = (LinearLayout) findViewById(R.id.spectrum);
-		level = (TextView) findViewById(R.id.single_level);
-		level.setTypeface(typeface);
-		mapLevel = (TextView) findViewById(R.id.maplevel);
-		mapLevel.setTypeface(typeface);
-		mapFreq = (TextView) findViewById(R.id.mapfreq);
-		spectrum = new Spectrum(this);
-		linearLayoutSpectrum.addView(spectrum.getChart());
-		handler = new MyHandler(this/* ,_T.getLooper() */);
-		paramParser = ParamParser.getInstance(this, Util.PATH_SERIAL);
-		try {
-			config = DeviceConfigParser.getInstance(Util.PATH_CONFIG)
-					.getConfig();
-			singleBean = paramParser.getConfig();
-		} catch (DocumentException e) {
-			e.printStackTrace();
-			config = new DeviceConfig();
-			singleBean = new SingleBean();
-		}
-		mapView = (MapView) findViewById(R.id.map);
-		mapManager = new MapManager(mapView, this);
-
-		preferences = this.getSharedPreferences(PREFERENCESNAME, MODE_PRIVATE);
-		drawLineBox = (CheckBox) findViewById(R.id.drawline);
-
-		drawLineBox
-				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView,
-												 boolean isChecked) {
-						showLine(isChecked);
-						preferences.edit()
-								.putBoolean(PREFERENCESCHECKKEY, isChecked)
-								.commit();
-					}
-				});
-		drawLineBox.setChecked(preferences.getBoolean(PREFERENCESCHECKKEY,
-				false));
-
-		soundBtn = (ImageButton) findViewById(R.id.sound_map);
-		soundparamText = (TextView) findViewById(R.id.sound_param);
-		isSound = preferences.getBoolean(PREFERENCESSOUNDKEY, false);
-		isDeviceSound = preferences.getBoolean(PREFERENCESDEVICEKEY, true);
-		setSoundBtnImage("");
-		avgCount = preferences.getInt(PREFERENCESLEVELAVGCOUNT,1);
-
-		((TextView)findViewById(R.id.level_avg)).setText((avgCount == 1 ? "实时" : avgCount)+"");
-
-		// showLine(drawLineBox.isChecked());
-		// singleThreadPool = Executors.newSingleThreadExecutor();
-	}
-
-	/**
-	 * 设置是否绘制路线
-	 * 
-	 * @param isShow
-	 */
-	private void showLine(boolean isShow) {
-		mapManager.setIsshowLine(isShow);
-	}
-
-	/**
-	 * dialog 回调事件
-	 * 
-	 * @param v
-	 */
-	public void OnclickShowNumber(View v) {
-		int _ResId = v.getId();
-		ShowNumberDialog(_ResId);
-	}
-
-	public void OnclickShowSelect(View v) {
-		int _resId = v.getId();
-		switch (_resId) {
-		case R.id.demodulation_mode:
-			ShowSelectDialog(_resId, R.array.array_demodulation_mode);
-			break;
-		case R.id.attenuation_control:
-			ShowSelectDialog(_resId, R.array.array_attenuation_control);
-			break;
-		case R.id.filter_bandwidth:
-			ShowSelectGridDialog(_resId, R.array.array_filter_bandwidth);
-			break;
-		case R.id.freq_bandwidth:
-			ShowSelectGridDialog(_resId, R.array.array_freq_bandwidth);
-			break;
-		case R.id.sound_map:
-		case R.id.sound_param:
-			ShowSelectDialog(_resId, R.array.array_sound);
-			break;
-		case R.id.level_avg:
-			ShowSelectDialog(_resId,R.array.levelavg);
-			break;
-		default:
-			break;
-		}
-	}
-
-	/**
-	 * 设置解调模式
-	 * 
-	 * @param pValue
-	 */
-	private void setDemodulation(String pValue) {
-		if (pValue.equalsIgnoreCase(getResources().getStringArray(
-				R.array.array_demodulation_mode)[0])) {
-			sendCmd("SYSTEM:CHAnnel:AUDio 0_");
-		} else {
-			sendCmd("SENS:DEM " + pValue);
-			sendCmd("SYSTEM:CHAnnel:AUDio 1_");
-		}
-	}
-
-	/**
-	 * 清除地图
-	 * 
-	 * @param isInit
-	 */
-	private void clearMap(Boolean isInit) {
-		if (!isInit)
-			mapManager.clearMap();
-	}
-
-	private void setSoundBtnImage(String pValue) {
-		String[] _Value = getResources().getStringArray(R.array.array_sound);
-		if (!TextUtils.isEmpty(pValue)) {
-			if (_Value[0].equalsIgnoreCase(pValue)) {
-				isSound = false;
-				isDeviceSound = false;
-			} else if (_Value[1].equalsIgnoreCase(pValue)) {
-				isSound = true;
-				startTTS();
-				isDeviceSound = false;
-			} else if (_Value[2].equalsIgnoreCase(pValue)) {
-				isSound = false;
-				isDeviceSound = true;
-			}
-			Editor _edit = preferences.edit();
-			_edit.putBoolean(PREFERENCESSOUNDKEY, isSound);
-			_edit.putBoolean(PREFERENCESDEVICEKEY, isDeviceSound);
-			_edit.commit();
-		}
-		if (!isSound && !isDeviceSound) {
-			soundBtn.setImageResource(R.drawable.sound_off);
-			soundparamText.setText(_Value[0]);
-		} else {
-			soundBtn.setImageResource(R.drawable.sound_on);
-			if (isSound) {
-				soundparamText.setText(_Value[1]);
-			} else {
-				soundparamText.setText(_Value[2]);
-			}
-		}
-		if(service != null){
-			service.setSound(isDeviceSound);
-		}
-	}
-
-	@Override
-	public void SetValueFinish(String p_Number, int p_ResId, Boolean isInit) {
-		if (p_Number == null)
-			return;
-		View _v = findViewById(p_ResId);
-		if (_v instanceof TextView) {
-			((TextView) _v).setText(p_Number);
-		}
-
-		switch (p_ResId) {
-		case R.id.center_freq:
-			sendCmd("SENS:FREQ " + Util.getCenterFreq(this, p_Number));
-			singleBean.centFreq = p_Number;
-			mapFreq.setText(p_Number);
-			spectrum.setCenterFreq(Util.getValue(this, p_Number));
-			clearMap(isInit);
-			break;
-		case R.id.freq_bandwidth:
-			sendCmd("FREQ:SPAN " + Util.getCenterFreq(this, p_Number));
-			singleBean.freqBandWidth = p_Number;
-			spectrum.setBandwidth(Util.getValue(this, p_Number));
-			clearMap(isInit);
-			break;
-		case R.id.attenuation_control:
-			sendCmd("INPut:ATT " + p_Number.substring(0, p_Number.length() - 2));
-			singleBean.attcontrol = p_Number;
-			break;
-		case R.id.filter_bandwidth:
-			sendCmd("SYSTEM:CHANNEL:BANDwidth 0, "
-					+ Util.getCenterFreq(this, p_Number));
-			singleBean.filterBandwidth = p_Number;
-			clearMap(isInit);
-			break;
-		case R.id.demodulation_mode:
-			setDemodulation(p_Number);
-			singleBean.demodulationMode = p_Number;
-			break;
-		case R.id.sound_map:
-		case R.id.sound_param:
-			setSoundBtnImage(p_Number);
-			isInit = true;
-			break;
-			case R.id.level_avg:
-				setLevelCount(p_Number);
-				break;
-		}
-
-		if (!isInit) {
-			try {
-				paramParser.saveConfig(singleBean);
-			} catch (DocumentException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-	}
+        mapView.onCreate(savedInstanceState);
 
 
+    }
 
-	private ServiceConnection connection = new ServiceConnection() {
-		@Override
-		public void onServiceConnected(ComponentName name, IBinder binder) {
-			service = ((ProtableService.LocalBinder) binder).getService();
-			service.addCallback(Single.this);
-			service.setSound(isDeviceSound);
-		}
+    /**
+     * 初始化数据
+     */
+    private void initValue() {
+        typeface = Typeface.createFromAsset(getAssets(), "fonts/DS-DIGIT.TTF");
+        linearLayoutSpectrum = (LinearLayout) findViewById(R.id.spectrum);
+        level = (TextView) findViewById(R.id.single_level);
+        level.setTypeface(typeface);
+        mapLevel = (TextView) findViewById(R.id.maplevel);
+        mapLevel.setTypeface(typeface);
+        mapFreq = (TextView) findViewById(R.id.mapfreq);
+        spectrum = new ChartView();
 
-		@Override
-		public void onServiceDisconnected(ComponentName name) {
-			service = null;
-		}
-	};
+        handler = new MyHandler(this/* ,_T.getLooper() */);
+        paramParser = ParamParser.getInstance(this, Util.PATH_SERIAL);
+        try {
+            config = DeviceConfigParser.getInstance(Util.PATH_CONFIG)
+                    .getConfig();
+            singleBean = paramParser.getConfig();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+            config = new DeviceConfig();
+            singleBean = new SingleBean();
+        }
+        mapView = (MapView) findViewById(R.id.map);
+        mapManager = new MapManager(mapView, this);
 
-	private void sendCmd(String pcmd) {
-		if (service != null)
-			service.SendCMD(pcmd);
-	}
+        preferences = this.getSharedPreferences(PREFERENCESNAME, MODE_PRIVATE);
+        drawLineBox = (CheckBox) findViewById(R.id.drawline);
 
-	private byte[] readCmd(String pCmd) {
-		if (service != null)
-			return service.ReadCMD(pCmd);
-		else
-			return null;
-	}
+        drawLineBox
+                .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView,
+                                                 boolean isChecked) {
+                        showLine(isChecked);
+                        preferences.edit()
+                                .putBoolean(PREFERENCESCHECKKEY, isChecked)
+                                .commit();
+                    }
+                });
+        drawLineBox.setChecked(preferences.getBoolean(PREFERENCESCHECKKEY,
+                false));
 
-	private String oldLevel = "";
-	/**
-	 * 开始单频侧脸
-	 */
-	private void startSingle() {
-		sendCmd("FREQ:MODE CW");
-		sendCmd("TRAC:FEED:CONT MTRAC,NEV");
-		sendCmd("TRAC:FEED:CONT IFPAN,ALW");
-		SetValueFinish(singleBean.centFreq, R.id.center_freq, true);
-		SetValueFinish(singleBean.filterBandwidth, R.id.filter_bandwidth, true);
-		SetValueFinish(singleBean.freqBandWidth, R.id.freq_bandwidth, true);
-		SetValueFinish(singleBean.demodulationMode, R.id.demodulation_mode,
-				true);
-		SetValueFinish(singleBean.attcontrol, R.id.attenuation_control, true);
-		sendCmd("TRAC:FEED:CONT IF,ALW");
-		sendCmd("SYSTEM:CHAnnel:IF 1_");
-		sendCmd("TRAC:UDP:TAG \"" + NetUtil.getLocalIpAddress() + "\",\""
-				+ config.UDPPort + "\",AUDIO\n");
-		String cmd = "SENSe:FUNCtion:ON  \"VOLT:AC\",\"FREQ:OFFS\",\"FSTR\",\"AM\",\"AM:POS\",\"AM:NEG\",\"FM\",\"FM:POS\",\"FM:NEG\",\"PM\",\"BAND\"";
-		sendCmd(cmd);
-		PortableApplication.getThreadPool().execute(new Runnable() {
-			@Override
-			public void run() {
-				while (isReadSpac) {
-					if (!isMap && spectrum != null) {
-						if (isSpectrumShow) {
-							byte[] data = readCmd(Util.SPECTRUMDATA);
-							if (data != null)
-								handler.obtainMessage(
-										Util.MSG_CMD_TCP_RECEIVE_SPEC, data)
-										.sendToTarget();
-						}
-					}
-					byte[] _IQ = readCmd(Util.IQMDATA1);
-					if (_IQ != null) {
-						String _newLevel = getLevelAvg(Util.getLevel(_IQ));
-						handler.obtainMessage(Util.MSG_CMD_TCP_RECEIVE_IQ,
-									_newLevel).sendToTarget();
-					}
-				}
-			}
-		});
+        soundBtn = (ImageButton) findViewById(R.id.sound_map);
+        soundparamText = (TextView) findViewById(R.id.sound_param);
+        isSound = preferences.getBoolean(PREFERENCESSOUNDKEY, false);
+        isDeviceSound = preferences.getBoolean(PREFERENCESDEVICEKEY, true);
+        setSoundBtnImage("");
+        avgCount = preferences.getInt(PREFERENCESLEVELAVGCOUNT, 1);
 
-	}
+        ((TextView) findViewById(R.id.level_avg)).setText((avgCount == 1 ? "实时" : avgCount) + "");
 
-	/**
-	 * 绘制频谱
-	 * 
-	 * @param pObj
-	 */
-	private void drawSpec(final Object pObj) {
+        // showLine(drawLineBox.isChecked());
+        // singleThreadPool = Executors.newSingleThreadExecutor();
+    }
 
-		spectrum.updateChart(pObj);
-	}
+    /**
+     * 设置是否绘制路线
+     *
+     * @param isShow
+     */
+    private void showLine(boolean isShow) {
+        mapManager.setIsshowLine(isShow);
+    }
 
-	/**
-	 * 设置电平值
-	 * 
-	 * @param pValue
-	 */
-	private void setText(String pValue) {
+    /**
+     * dialog 回调事件
+     *
+     * @param v
+     */
+    public void OnclickShowNumber(View v) {
+        int _ResId = v.getId();
+        ShowNumberDialog(_ResId);
+    }
 
-		if(!oldLevel.equalsIgnoreCase(pValue)){
-			if (isMap) {
-				mapLevel.setText(pValue);
-			} else {
-				level.setText(pValue);
-			}
-		}
-		if(isSound){
-			if (speech != null && !speech.isSpeaking()) {  
-				speech.setPitch(0.5f);// 设置音调，值越大声音越尖（女生），值越小则变成男声,1.0是常规  
-				speech.speak(pValue,  
-	                    TextToSpeech.QUEUE_FLUSH, null);  
-	        }  
-		}
-		mapManager.setColor(color(Double.parseDouble(pValue)));
-	}
+    public void OnclickShowSelect(View v) {
+        int _resId = v.getId();
+        switch (_resId) {
+            case R.id.demodulation_mode:
+                ShowSelectDialog(_resId, R.array.array_demodulation_mode);
+                break;
+            case R.id.attenuation_control:
+                ShowSelectDialog(_resId, R.array.array_attenuation_control);
+                break;
+            case R.id.filter_bandwidth:
+                ShowSelectGridDialog(_resId, R.array.array_filter_bandwidth);
+                break;
+            case R.id.freq_bandwidth:
+                ShowSelectGridDialog(_resId, R.array.array_freq_bandwidth);
+                break;
+            case R.id.sound_map:
+            case R.id.sound_param:
+                ShowSelectDialog(_resId, R.array.array_sound);
+                break;
+            case R.id.level_avg:
+                ShowSelectDialog(_resId, R.array.levelavg);
+                break;
+            default:
+                break;
+        }
+    }
 
-	@Override
-	public void netStatus(int status) {
-		switch (status) {
-		case Util.MSG_NET_OK:
-			ShowMsg(getString(R.string.device_conn_ok));
-			mapManager.AddMarker(R.drawable.runenter);
-			if (isReadSpac == false) {
-				isReadSpac = true;
-				startSingle();
-			}
-			break;
-		case Util.MSG_NET_ERROR:
-			isReadSpac = false;
-			mapManager.AddMarker(R.drawable.error);
-			ShowMsg(getString(R.string.device_conn_err));
-			break;
-		}
-	}
+    /**
+     * 设置解调模式
+     *
+     * @param pValue
+     */
+    private void setDemodulation(String pValue) {
+        if (pValue.equalsIgnoreCase(getResources().getStringArray(
+                R.array.array_demodulation_mode)[0])) {
+            sendCmd("SYSTEM:CHAnnel:AUDio 0_");
+        } else {
+            sendCmd("SENS:DEM " + pValue);
+            sendCmd("SYSTEM:CHAnnel:AUDio 1_");
+        }
+    }
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		mapManager.deactivate(); // 注销定位
-		mapView.onDestroy();
-		unbindService(connection);
-		// IQThread = null;
-	}
+    /**
+     * 清除地图
+     *
+     * @param isInit
+     */
+    private void clearMap(Boolean isInit) {
+        if (!isInit)
+            mapManager.clearMap();
+    }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		mapView.onResume();
-		mapManager.initMap();
-		if (isSound) {
-			startTTS();
-		}
-		if (isReadSpac == false) {
-			isReadSpac = true;
-			startSingle();
-		}
-		if(service != null){
-			service.setSound(isDeviceSound);
-		}
-		
-	}
+    private void setSoundBtnImage(String pValue) {
+        String[] _Value = getResources().getStringArray(R.array.array_sound);
+        if (!TextUtils.isEmpty(pValue)) {
+            if (_Value[0].equalsIgnoreCase(pValue)) {
+                isSound = false;
+                isDeviceSound = false;
+            } else if (_Value[1].equalsIgnoreCase(pValue)) {
+                isSound = true;
+                startTTS();
+                isDeviceSound = false;
+            } else if (_Value[2].equalsIgnoreCase(pValue)) {
+                isSound = false;
+                isDeviceSound = true;
+            }
+            Editor _edit = preferences.edit();
+            _edit.putBoolean(PREFERENCESSOUNDKEY, isSound);
+            _edit.putBoolean(PREFERENCESDEVICEKEY, isDeviceSound);
+            _edit.commit();
+        }
+        if (!isSound && !isDeviceSound) {
+            soundBtn.setImageResource(R.drawable.sound_off);
+            soundparamText.setText(_Value[0]);
+        } else {
+            soundBtn.setImageResource(R.drawable.sound_on);
+            if (isSound) {
+                soundparamText.setText(_Value[1]);
+            } else {
+                soundparamText.setText(_Value[2]);
+            }
+        }
+        if (service != null) {
+            service.setSound(isDeviceSound);
+        }
+    }
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		isReadSpac = false;
-		mapView.onPause();
-		mapManager.deactivate();
-		if (service != null) {
-			service.setSound(false);
-		}
-	}
+    @Override
+    public void SetValueFinish(String p_Number, int p_ResId, Boolean isInit) {
+        if (p_Number == null)
+            return;
+        View _v = findViewById(p_ResId);
+        if (_v instanceof TextView) {
+            ((TextView) _v).setText(p_Number);
+        }
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
+        switch (p_ResId) {
+            case R.id.center_freq:
+                sendCmd("SENS:FREQ " + Util.getCenterFreq(this, p_Number));
+                singleBean.centFreq = p_Number;
+                mapFreq.setText(p_Number);
 
-		super.onSaveInstanceState(outState);
-		mapView.onSaveInstanceState(outState);
-		outState.putParcelableArrayList(MAKERKEY, mapManager.circles);
-	}
+                spectrum.setCenterFreq(Util.getValue(this, p_Number));
+                clearMap(isInit);
+                break;
+            case R.id.freq_bandwidth:
+                sendCmd("FREQ:SPAN " + Util.getCenterFreq(this, p_Number));
+                singleBean.freqBandWidth = p_Number;
+                spectrum.setBandwidth(Util.getValue(this, p_Number));
+                clearMap(isInit);
+                break;
+            case R.id.attenuation_control:
+                sendCmd("INPut:ATT " + p_Number.substring(0, p_Number.length() - 2));
+                singleBean.attcontrol = p_Number;
+                break;
+            case R.id.filter_bandwidth:
+                sendCmd("SYSTEM:CHANNEL:BANDwidth 0, "
+                        + Util.getCenterFreq(this, p_Number));
+                singleBean.filterBandwidth = p_Number;
+                clearMap(isInit);
+                break;
+            case R.id.demodulation_mode:
+                setDemodulation(p_Number);
+                singleBean.demodulationMode = p_Number;
+                break;
+            case R.id.sound_map:
+            case R.id.sound_param:
+                setSoundBtnImage(p_Number);
+                isInit = true;
+                break;
+            case R.id.level_avg:
+                setLevelCount(p_Number);
+                break;
+        }
 
-	class MyHandler extends Handler {
-		private WeakReference<Single> main = null;
+        if (!isInit) {
+            try {
+                paramParser.saveConfig(singleBean);
+            } catch (DocumentException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-		public MyHandler(Single main, Looper looper) {
-			super(looper);
-			this.main = new WeakReference<Single>(main);
-		}
+    }
 
-		public MyHandler(Single main) {
-			this.main = new WeakReference<Single>(main);
-		}
+    private void sendCmd(String pcmd) {
+        if (service != null)
+            service.SendCMD(pcmd);
+    }
 
-		@Override
-		public void handleMessage(final Message msg) {
-			switch (msg.what) {
-			case Util.MSG_CMD_TCP_RECEIVE_SPEC:
-				main.get().drawSpec(msg.obj);
-				break;
-			case Util.MSG_CMD_TCP_RECEIVE_IQ:
-				mapManager.AddMarker(R.drawable.runenter);
-				main.get().setText((String)msg.obj);
-				break;
-			}
-		}
-	}
+    private byte[] readCmd(String pCmd) {
+        if (service != null)
+            return service.ReadCMD(pCmd);
+        else
+            return null;
+    }
 
-	public void btnOnClick(View view) {
-		int id = view.getId();
-		switch (id) {
-		case R.id.broomMap:
-			setTTS();
-			clearMap(false);
-			break;
-		case R.id.compassMap:
-			mapManager.SetCompass();
-			break;
-		default:
-			break;
-		}
-	}
-	/**
+    /**
+     * 开始单频侧脸
+     */
+    private void startSingle() {
+        sendCmd("FREQ:MODE CW");
+        sendCmd("TRAC:FEED:CONT MTRAC,NEV");
+        sendCmd("TRAC:FEED:CONT IFPAN,ALW");
+        SetValueFinish(singleBean.centFreq, R.id.center_freq, true);
+        SetValueFinish(singleBean.filterBandwidth, R.id.filter_bandwidth, true);
+        SetValueFinish(singleBean.freqBandWidth, R.id.freq_bandwidth, true);
+        SetValueFinish(singleBean.demodulationMode, R.id.demodulation_mode,
+                true);
+        SetValueFinish(singleBean.attcontrol, R.id.attenuation_control, true);
+        sendCmd("TRAC:FEED:CONT IF,ALW");
+        sendCmd("SYSTEM:CHAnnel:IF 1_");
+        sendCmd("TRAC:UDP:TAG \"" + NetUtil.getLocalIpAddress() + "\",\""
+                + config.UDPPort + "\",AUDIO\n");
+        String cmd = "SENSe:FUNCtion:ON  \"VOLT:AC\",\"FREQ:OFFS\",\"FSTR\",\"AM\",\"AM:POS\",\"AM:NEG\",\"FM\",\"FM:POS\",\"FM:NEG\",\"PM\",\"BAND\"";
+        sendCmd(cmd);
+        PortableApplication.getThreadPool().execute(new Runnable() {
+            @Override
+            public void run() {
+                while (isReadSpac) {
+                    if (!isMap && spectrum != null) {
+                        if (isSpectrumShow) {
+                            byte[] data = readCmd(Util.SPECTRUMDATA);
+                            if (data != null)
+                                handler.obtainMessage(
+                                        Util.MSG_CMD_TCP_RECEIVE_SPEC, data)
+                                        .sendToTarget();
+                        }
+                    }
+                    byte[] _IQ = readCmd(Util.IQMDATA1);
+                    if (_IQ != null) {
+                        String _newLevel = getLevelAvg(Util.getLevel(_IQ));
+                        handler.obtainMessage(Util.MSG_CMD_TCP_RECEIVE_IQ,
+                                _newLevel).sendToTarget();
+                    }
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 绘制频谱
+     *
+     * @param pObj
+     */
+    private void drawSpec(final Object pObj) {
+
+        spectrum.bindDate(pObj);
+    }
+
+    /**
+     * 设置电平值
+     *
+     * @param pValue
+     */
+    private void setText(String pValue) {
+
+        if (!oldLevel.equalsIgnoreCase(pValue)) {
+            if (isMap) {
+                mapLevel.setText(pValue);
+            } else {
+                level.setText(pValue);
+            }
+        }
+        if (isSound) {
+            if (speech != null && !speech.isSpeaking()) {
+                speech.setPitch(0.5f);// 设置音调，值越大声音越尖（女生），值越小则变成男声,1.0是常规
+                speech.speak(pValue,
+                        TextToSpeech.QUEUE_FLUSH, null);
+            }
+        }
+        mapManager.setColor(color(Double.parseDouble(pValue)));
+    }
+
+    @Override
+    public void netStatus(int status) {
+        switch (status) {
+            case Util.MSG_NET_OK:
+                ShowMsg(getString(R.string.device_conn_ok));
+                mapManager.AddMarker(R.drawable.runenter);
+                if (isReadSpac == false) {
+                    isReadSpac = true;
+                    startSingle();
+                }
+                break;
+            case Util.MSG_NET_ERROR:
+                isReadSpac = false;
+                mapManager.AddMarker(R.drawable.error);
+                ShowMsg(getString(R.string.device_conn_err));
+                break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapManager.deactivate(); // 注销定位
+        mapView.onDestroy();
+        unbindService(connection);
+        // IQThread = null;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+        mapManager.initMap();
+        if (isSound) {
+            startTTS();
+        }
+        if (isReadSpac == false) {
+            isReadSpac = true;
+            startSingle();
+        }
+        if (service != null) {
+            service.setSound(isDeviceSound);
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isReadSpac = false;
+        mapView.onPause();
+        mapManager.deactivate();
+        if (service != null) {
+            service.setSound(false);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(MAKERKEY, mapManager.circles);
+    }
+
+    public void btnOnClick(View view) {
+        int id = view.getId();
+        switch (id) {
+            case R.id.broomMap:
+                setTTS();
+                clearMap(false);
+                break;
+            case R.id.compassMap:
+                mapManager.SetCompass();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
      * 打开tts设置
      */
     protected void setTTS() {
-		Intent intent = new Intent();
-		intent.setAction("com.android.settings.TTS_SETTINGS");
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(intent);
-	}
-	
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		// TODO Auto-generated method stub
-		
-		initSpectrumView();
-		
-		super.onConfigurationChanged(newConfig);
-	}
-	
-	protected void initSpectrumView() {
-		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			linearLayoutSpectrum.setVisibility(View.VISIBLE);
-			level.setTextSize(60);
-			isSpectrumShow = true;
-		} else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-			linearLayoutSpectrum.setVisibility(View.GONE);
-			level.setTextSize(140);
-			isSpectrumShow = false;
-		}
-	}
+        Intent intent = new Intent();
+        intent.setAction("com.android.settings.TTS_SETTINGS");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 
-	private Queue<Double> levels = new ArrayDeque<Double>();
-	private int avgCount = 1;
-	private double levelSum = 0;
-	public String getLevelAvg(double plevel){
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        // TODO Auto-generated method stub
 
-		if(levelSum == 0){
-			levels.clear();
-		}
-		if(avgCount == 1){
-			return  String.format("%.0f",plevel);
-		}
-		double _avg = 0;
-		int _listSize = levels.size();
-		if (_listSize >= avgCount){
-				double _tmp = levels.poll();
-				levelSum -= _tmp;
-				_listSize--;
-		}
-		levels.add(plevel);
-		levelSum += plevel;
-		_listSize += 1;
-		return  String.format("%.0f",levelSum / _listSize);
-	}
+        initSpectrumView();
 
-	private void setLevelCount(String p_Number) {
-		if(!Util.isNumeric(p_Number.trim())){
-			avgCount = 1;
-		}else {
-			avgCount = Integer.parseInt(p_Number.trim());
-		}
-		preferences.edit().putInt(PREFERENCESLEVELAVGCOUNT,avgCount).commit();
-		levelSum = 0;
-	}
-	
+        super.onConfigurationChanged(newConfig);
+    }
+
+    protected void initSpectrumView() {
+
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            linearLayoutSpectrum.setVisibility(View.VISIBLE);
+            if (chartView == null) {
+                chartView = spectrum.getChart(this, false);
+                linearLayoutSpectrum.addView(chartView);
+            }
+            chartView.setVisibility(View.VISIBLE);
+
+            spectrum.startDraw();
+            level.setTextSize(60);
+            isSpectrumShow = true;
+        } else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            linearLayoutSpectrum.setVisibility(View.GONE);
+            if (chartView != null) {
+
+//                linearLayoutSpectrum.removeView(chartView);
+                chartView.setVisibility(View.GONE);
+            }
+            level.setTextSize(140);
+            isSpectrumShow = false;
+        }
+    }
+
+    public String getLevelAvg(double plevel) {
+
+        if (levelSum == 0) {
+            levels.clear();
+        }
+        if (avgCount == 1) {
+            return String.format("%.0f", plevel);
+        }
+        double _avg = 0;
+        int _listSize = levels.size();
+        if (_listSize >= avgCount) {
+            double _tmp = levels.poll();
+            levelSum -= _tmp;
+            _listSize--;
+        }
+        levels.add(plevel);
+        levelSum += plevel;
+        _listSize += 1;
+        return String.format("%.0f", levelSum / _listSize);
+    }
+
+    private void setLevelCount(String p_Number) {
+        if (!Util.isNumeric(p_Number.trim())) {
+            avgCount = 1;
+        } else {
+            avgCount = Integer.parseInt(p_Number.trim());
+        }
+        preferences.edit().putInt(PREFERENCESLEVELAVGCOUNT, avgCount).commit();
+        levelSum = 0;
+    }
+
+    class MyHandler extends Handler {
+        private WeakReference<Single> main = null;
+
+        public MyHandler(Single main, Looper looper) {
+            super(looper);
+            this.main = new WeakReference<Single>(main);
+        }
+
+        public MyHandler(Single main) {
+            this.main = new WeakReference<Single>(main);
+        }
+
+        @Override
+        public void handleMessage(final Message msg) {
+            switch (msg.what) {
+                case Util.MSG_CMD_TCP_RECEIVE_SPEC:
+                    main.get().drawSpec(msg.obj);
+                    break;
+                case Util.MSG_CMD_TCP_RECEIVE_IQ:
+                    mapManager.AddMarker(R.drawable.runenter);
+                    main.get().setText((String) msg.obj);
+                    break;
+            }
+        }
+    }
+
 }

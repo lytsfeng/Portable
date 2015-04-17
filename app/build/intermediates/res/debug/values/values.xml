@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/arrays.xml -->
+    <!-- From: file:/home/john/log/Portable/app/src/main/res/values/arrays.xml -->
     <eat-comment/>
     <string-array name="array_attenuation_control">
         <item>0dB</item>
@@ -70,7 +70,7 @@
         <item>40</item>
         <item>50</item>
     </string-array>
-    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/attr.xml -->
+    <!-- From: file:/home/john/log/Portable/app/src/main/res/values/attr.xml -->
     <eat-comment/>
     <attr format="dimension" name="borderRadius"/>
     <attr format="reference" name="src"/>
@@ -79,7 +79,7 @@
         <enum name="round" value="1"/>
     </attr>
     <declare-styleable name="CustomImageView"><attr name="borderRadius"/><attr name="type"/><attr name="src"/></declare-styleable>
-    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/dimens.xml -->
+    <!-- From: file:/home/john/log/Portable/app/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">0dp</dimen>
     <dimen name="activity_vertical_margin">0dp</dimen>
@@ -87,7 +87,7 @@
     <dimen name="param_setting_padding_left">5dp</dimen>
     <dimen name="param_setting_padding_right">5dp</dimen>
     <dimen name="param_setting_padding_top">5dp</dimen>
-    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/home/john/log/Portable/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="ButtonTextClose">X</string>
     <string name="ButtonTextDot">.</string>
@@ -139,7 +139,7 @@
     <string name="title_activity_map">地图</string>
     <string name="title_activity_param__dialog">参数设置</string>
     <string name="title_activity_single_measure">单频测量</string>
-    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/home/john/log/Portable/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppTheme" parent="android:Theme.Holo.Light">
         <!-- Customize your theme here. -->

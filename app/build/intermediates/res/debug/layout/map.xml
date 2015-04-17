@@ -92,4 +92,4 @@
 	    android:onClick="OnclickShowSelect"
 	    android:background="@drawable/map_icon_selector_sound"/>
 </RelativeLayout>
-<!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/layout/map.xml -->
+<!-- From: file:/home/john/log/Portable/app/src/main/res/layout/map.xml -->

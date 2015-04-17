@@ -7,4 +7,4 @@
     <item android:state_focused="false" android:state_pressed="true"
           android:drawable="@drawable/map_icon_shape_over" />
     <item android:drawable="@drawable/map_icon_sound_shape" />
-</selector><!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/drawable/map_icon_selector_sound.xml -->
+</selector><!-- From: file:/home/john/log/Portable/app/src/main/res/drawable/map_icon_selector_sound.xml -->

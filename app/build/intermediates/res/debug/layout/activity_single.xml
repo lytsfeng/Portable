@@ -19,6 +19,7 @@
             android:layout_weight="1"
             android:background="#000000"
             android:orientation="vertical">
+
         </LinearLayout>
 
         <LinearLayout
@@ -41,4 +42,4 @@
     </LinearLayout>
 
 </LinearLayout>
-<!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/layout/activity_single.xml -->
+<!-- From: file:/home/john/log/Portable/app/src/main/res/layout/activity_single.xml -->

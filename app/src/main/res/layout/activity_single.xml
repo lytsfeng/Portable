@@ -19,6 +19,7 @@
             android:layout_weight="1"
             android:background="#000000"
             android:orientation="vertical">
+
         </LinearLayout>
 
         <LinearLayout
