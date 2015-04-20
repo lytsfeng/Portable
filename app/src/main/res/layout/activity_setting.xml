@@ -1,0 +1,69 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/param_setting_padding_top"
+    android:paddingRight="@dimen/param_setting_padding_right"
+    android:paddingLeft="@dimen/param_setting_padding_left"
+    android:paddingBottom="@dimen/param_setting_padding_bottom">
+
+    <TableRow
+        style="@style/StyleTable">
+
+        <TextView
+            style="@style/StyleTableTitle"
+            android:text="@string/setting_server_ip"/>
+        <EditText
+            android:id="@+id/setting_server_ip"
+            style="@style/StyleTableValue"
+            />
+    </TableRow>
+    <TableRow
+        style="@style/StyleTable">
+
+        <TextView
+            style="@style/StyleTableTitle"
+            android:text="@string/setting_server_tcp_port"/>
+
+        <EditText
+            android:id="@+id/setting_server_tcp_port"
+            style="@style/StyleTableValue"
+            />
+    </TableRow>
+
+    <TableRow
+        style="@style/StyleTable">
+        <TextView
+            style="@style/StyleTableTitle"
+            android:text="@string/setting_server_udp_port"/>
+        <EditText
+            android:id="@+id/setting_server_udp_port"
+            style="@style/StyleTableValue"
+            />
+    </TableRow>
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/setting_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="@string/string_ok"
+            />
+        <Button
+            android:id="@+id/setting_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="@string/string_cancel"
+            />
+    </LinearLayout>
+
+
+
+
+</TableLayout>

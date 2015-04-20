@@ -51,6 +51,13 @@
     <string name="setting_tip">中文语音包已经安装完成，点击设置，完成操作</string>
     <string name="error">不支持语音播报</string>
     <string name="level_avg">电平平均</string>
+    <string name="menu_setting">设置</string>
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="setting_server_udp_port">UDP端口</string>
+    <string name="setting_server_tcp_port">TCP端口</string>
+    <string name="setting_server_ip">设备地址</string>
+    <string name="string_ok">确定</string>
+    <string name="string_cancel">取消</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

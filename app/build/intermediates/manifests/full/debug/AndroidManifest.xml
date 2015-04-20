@@ -24,6 +24,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 
+    <android:uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
     <application
         android:name="com.ldkj.portable.PortableApplication"
         android:allowBackup="false"
@@ -47,6 +51,11 @@
         <activity android:name="com.ldkj.portable.activitys.OfflineMapActivity" />
 
         <service android:name="com.ldkj.portable.services.ProtableService" />
+
+        <activity
+            android:name="com.ldkj.portable.activitys.SettingActivity"
+            android:label="@string/title_activity_setting" >
+        </activity>
     </application>
 
 </manifest>

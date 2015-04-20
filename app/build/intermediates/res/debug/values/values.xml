@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/home/john/log/Portable/app/src/main/res/values/arrays.xml -->
+    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/arrays.xml -->
     <eat-comment/>
     <string-array name="array_attenuation_control">
         <item>0dB</item>
@@ -70,7 +70,7 @@
         <item>40</item>
         <item>50</item>
     </string-array>
-    <!-- From: file:/home/john/log/Portable/app/src/main/res/values/attr.xml -->
+    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/attr.xml -->
     <eat-comment/>
     <attr format="dimension" name="borderRadius"/>
     <attr format="reference" name="src"/>
@@ -79,7 +79,7 @@
         <enum name="round" value="1"/>
     </attr>
     <declare-styleable name="CustomImageView"><attr name="borderRadius"/><attr name="type"/><attr name="src"/></declare-styleable>
-    <!-- From: file:/home/john/log/Portable/app/src/main/res/values/dimens.xml -->
+    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">0dp</dimen>
     <dimen name="activity_vertical_margin">0dp</dimen>
@@ -87,7 +87,7 @@
     <dimen name="param_setting_padding_left">5dp</dimen>
     <dimen name="param_setting_padding_right">5dp</dimen>
     <dimen name="param_setting_padding_top">5dp</dimen>
-    <!-- From: file:/home/john/log/Portable/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="ButtonTextClose">X</string>
     <string name="ButtonTextDot">.</string>
@@ -125,21 +125,28 @@
     <string name="install">安装</string>
     <string name="install_tip">设备不支持中文语用播报，点击安装按钮完成中文语音的安装</string>
     <string name="level_avg">电平平均</string>
+    <string name="menu_setting">设置</string>
     <string name="offlinemap">离线地图</string>
     <string name="scan">scan</string>
     <string name="setting">设置</string>
+    <string name="setting_server_ip">设备地址</string>
+    <string name="setting_server_tcp_port">TCP端口</string>
+    <string name="setting_server_udp_port">UDP端口</string>
     <string name="setting_tip">中文语音包已经安装完成，点击设置，完成操作</string>
     <string name="single">single</string>
     <string name="sound">声音</string>
     <string name="sound_title">声音</string>
     <string name="squelch_threshold">静噪门限</string>
+    <string name="string_cancel">取消</string>
+    <string name="string_ok">确定</string>
     <string name="title_activity_about">关于</string>
     <string name="title_activity_dialog">对话框</string>
     <string name="title_activity_freq_scan">频段扫描</string>
     <string name="title_activity_map">地图</string>
     <string name="title_activity_param__dialog">参数设置</string>
+    <string name="title_activity_setting">SettingActivity</string>
     <string name="title_activity_single_measure">单频测量</string>
-    <!-- From: file:/home/john/log/Portable/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppTheme" parent="android:Theme.Holo.Light">
         <!-- Customize your theme here. -->

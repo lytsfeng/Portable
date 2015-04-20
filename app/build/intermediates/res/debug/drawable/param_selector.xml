@@ -4,4 +4,4 @@
           android:drawable="@drawable/table_frame_onclick" />
     <item android:state_focused="false" android:state_pressed="true"
           android:drawable="@drawable/table_frame_onclick" />
-</selector><!-- From: file:/home/john/log/Portable/app/src/main/res/drawable/param_selector.xml -->
+</selector><!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/drawable/param_selector.xml -->

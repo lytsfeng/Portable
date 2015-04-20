@@ -418,7 +418,7 @@ public class Single extends ActivityFrame implements
         }
         if (isSound) {
             if (speech != null && !speech.isSpeaking()) {
-                speech.setPitch(0.5f);// 设置音调，值越大声音越尖（女生），值越小则变成男声,1.0是常规
+                speech.setPitch(1f);// 设置音调，值越大声音越尖（女生），值越小则变成男声,1.0是常规
                 speech.speak(pValue,
                         TextToSpeech.QUEUE_FLUSH, null);
             }
@@ -495,7 +495,7 @@ public class Single extends ActivityFrame implements
         int id = view.getId();
         switch (id) {
             case R.id.broomMap:
-                setTTS();
+//                setTTS();
                 clearMap(false);
                 break;
             case R.id.compassMap:
@@ -519,9 +519,7 @@ public class Single extends ActivityFrame implements
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         // TODO Auto-generated method stub
-
         initSpectrumView();
-
         super.onConfigurationChanged(newConfig);
     }
 
