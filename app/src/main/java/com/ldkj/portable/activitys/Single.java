@@ -451,6 +451,7 @@ public class Single extends ActivityFrame implements
         mapManager.deactivate(); // 注销定位
         mapView.onDestroy();
         unbindService(connection);
+        isReadSpac = false;
         // IQThread = null;
     }
 

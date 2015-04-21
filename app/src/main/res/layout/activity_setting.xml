@@ -16,7 +16,8 @@
         <EditText
             android:id="@+id/setting_server_ip"
             style="@style/StyleTableValue"
-            />
+            android:digits="0123456789."
+            android:inputType="number"/>
     </TableRow>
     <TableRow
         style="@style/StyleTable">
@@ -28,6 +29,7 @@
         <EditText
             android:id="@+id/setting_server_tcp_port"
             style="@style/StyleTableValue"
+            android:inputType="number"
             />
     </TableRow>
 
@@ -39,6 +41,7 @@
         <EditText
             android:id="@+id/setting_server_udp_port"
             style="@style/StyleTableValue"
+            android:inputType="number"
             />
     </TableRow>
 

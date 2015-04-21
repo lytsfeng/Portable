@@ -48,14 +48,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.ldkj.portable.activitys.SettingActivity" />
         <activity android:name="com.ldkj.portable.activitys.OfflineMapActivity" />
 
         <service android:name="com.ldkj.portable.services.ProtableService" />
-
-        <activity
-            android:name="com.ldkj.portable.activitys.SettingActivity"
-            android:label="@string/title_activity_setting" >
-        </activity>
     </application>
 
 </manifest>
