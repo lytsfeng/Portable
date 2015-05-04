@@ -34,4 +34,4 @@
         android:layout_below="@id/city_name"
         android:textSize="15sp" />
 
-</RelativeLayout><!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/layout/offlinemap_child.xml -->
+</RelativeLayout><!-- From: file:/home/john/workspace/Portable/app/src/main/res/layout/offlinemap_child.xml -->

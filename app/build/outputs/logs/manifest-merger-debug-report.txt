@@ -84,7 +84,7 @@ uses-permission#android.permission.CHANGE_WIFI_MULTICAST_STATE
 ADDED from AndroidManifest.xml:25:5
 	android:name
 		ADDED from AndroidManifest.xml:25:22
-android:uses-permission#android.permission.READ_EXTERNAL_STORAGE
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
 ADDED from AndroidManifest.xml:27:5
 	android:maxSdkVersion
 		ADDED from AndroidManifest.xml:29:9
@@ -110,32 +110,32 @@ ADDED from AndroidManifest.xml:37:9
 	android:value
 		ADDED from AndroidManifest.xml:39:13
 activity#com.ldkj.portable.activitys.Single
-ADDED from AndroidManifest.xml:41:9
+ADDED from AndroidManifest.xml:42:9
 	android:label
-		ADDED from AndroidManifest.xml:44:13
+		ADDED from AndroidManifest.xml:45:13
 	android:configChanges
+		ADDED from AndroidManifest.xml:44:13
+	android:name
 		ADDED from AndroidManifest.xml:43:13
-	android:name
-		ADDED from AndroidManifest.xml:42:13
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:45:13
+ADDED from AndroidManifest.xml:46:13
 action#android.intent.action.MAIN
-ADDED from AndroidManifest.xml:46:17
+ADDED from AndroidManifest.xml:47:17
 	android:name
-		ADDED from AndroidManifest.xml:46:25
+		ADDED from AndroidManifest.xml:47:25
 category#android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:48:17
+ADDED from AndroidManifest.xml:49:17
 	android:name
-		ADDED from AndroidManifest.xml:48:27
+		ADDED from AndroidManifest.xml:49:27
 activity#com.ldkj.portable.activitys.SettingActivity
-ADDED from AndroidManifest.xml:51:9
-	android:name
-		ADDED from AndroidManifest.xml:51:19
-activity#com.ldkj.portable.activitys.OfflineMapActivity
 ADDED from AndroidManifest.xml:52:9
 	android:name
 		ADDED from AndroidManifest.xml:52:19
-service#com.ldkj.portable.services.ProtableService
+activity#com.ldkj.portable.activitys.OfflineMapActivity
 ADDED from AndroidManifest.xml:53:9
 	android:name
-		ADDED from AndroidManifest.xml:53:18
+		ADDED from AndroidManifest.xml:53:19
+service#com.ldkj.portable.services.ProtableService
+ADDED from AndroidManifest.xml:54:9
+	android:name
+		ADDED from AndroidManifest.xml:54:18

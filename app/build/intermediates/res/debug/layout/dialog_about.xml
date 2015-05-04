@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:gravity="center_horizontal"
@@ -33,4 +32,4 @@
     
 
 
-</LinearLayout><!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/layout/dialog_about.xml -->
+</LinearLayout><!-- From: file:/home/john/workspace/Portable/app/src/main/res/layout/dialog_about.xml -->

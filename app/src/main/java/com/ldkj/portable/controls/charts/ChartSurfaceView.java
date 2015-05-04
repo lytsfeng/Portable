@@ -63,7 +63,7 @@ public class ChartSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    public void surfaceChanged(SurfaceHolder rr, int format, int width, int height) {
         startDraw();
     }
 

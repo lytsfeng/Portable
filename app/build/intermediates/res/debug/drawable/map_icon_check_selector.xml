@@ -2,4 +2,4 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:state_checked="true" android:drawable="@drawable/map_icon_shape_over"></item>
     <item android:state_checked="false" android:drawable="@drawable/map_icon_shape"></item>
-</selector><!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/drawable/map_icon_check_selector.xml -->
+</selector><!-- From: file:/home/john/workspace/Portable/app/src/main/res/drawable/map_icon_check_selector.xml -->

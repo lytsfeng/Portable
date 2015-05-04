@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values-w820dp/colors.xml -->
+    <!-- From: file:/home/john/workspace/Portable/app/src/main/res/values-w820dp/colors.xml -->
     <eat-comment/>
     <color name="black">#000000</color>
     <color name="color_ff6f84a3">#ff6f84a3</color>
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
-    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values-w820dp/dimens.xml -->
+    <!-- From: file:/home/john/workspace/Portable/app/src/main/res/values-w820dp/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">0dp</dimen>
-    <!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/values-w820dp/colors.xml -->
+    <!-- From: file:/home/john/workspace/Portable/app/src/main/res/values-w820dp/colors.xml -->
     <eat-comment/>
     <drawable name="blue">#ffdee7f7</drawable>
     <drawable name="darkgray">#808080FF</drawable>

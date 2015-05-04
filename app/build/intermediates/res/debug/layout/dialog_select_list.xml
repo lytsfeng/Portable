@@ -7,4 +7,4 @@
     <ListView
         android:id="@+id/dialog_select_item"
         style="@style/StyleListView"></ListView>
-</LinearLayout><!-- From: file:/home/john/workspace/company/Portable/app/src/main/res/layout/dialog_select_list.xml -->
+</LinearLayout><!-- From: file:/home/john/workspace/Portable/app/src/main/res/layout/dialog_select_list.xml -->
