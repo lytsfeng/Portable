@@ -1,9 +1,5 @@
 package com.ldkj.portable.activitys;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -29,6 +25,10 @@ import com.amap.api.maps.offlinemap.OfflineMapManager.OfflineMapDownloadListener
 import com.amap.api.maps.offlinemap.OfflineMapProvince;
 import com.amap.api.maps.offlinemap.OfflineMapStatus;
 import com.ldkj.portable.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * AMapV2地图中简单介绍离线地图下载
@@ -288,7 +288,7 @@ public class OfflineMapActivity extends Activity implements
 			ViewHolder holder = new ViewHolder(convertView);
 			holder.cityName.setText(cityMap.get(groupPosition)
 					.get(childPosition).getCity());
-			holder.citySize.setText(String.format(".2f MB", (cityMap.get(groupPosition).get(
+			holder.citySize.setText(String.format("%.2f MB", (cityMap.get(groupPosition).get(
 					childPosition).getSize())
 					/ (1024 * 1024f)) );
 

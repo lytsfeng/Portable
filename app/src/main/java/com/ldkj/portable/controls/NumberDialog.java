@@ -33,7 +33,6 @@ public class NumberDialog extends DialogBase implements View.OnClickListener {
         findViewById(pViewId).setOnClickListener(this);
     }
 
-
     private void onOk(String pValue, String pUnit) {
         if (!pValue.equals(".") && pValue.length() != 0) {
             pValue += pUnit;

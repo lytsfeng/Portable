@@ -85,57 +85,55 @@ ADDED from AndroidManifest.xml:25:5
 	android:name
 		ADDED from AndroidManifest.xml:25:22
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from AndroidManifest.xml:27:5
-	android:maxSdkVersion
-		ADDED from AndroidManifest.xml:29:9
+ADDED from AndroidManifest.xml:26:5
 	android:name
-		ADDED from AndroidManifest.xml:28:9
+		ADDED from AndroidManifest.xml:26:22
 application
-ADDED from AndroidManifest.xml:31:5
+ADDED from AndroidManifest.xml:28:5
 MERGED from com.android.support:support-v4:22.0.0:22:5
 	android:label
-		ADDED from AndroidManifest.xml:35:9
-	android:allowBackup
-		ADDED from AndroidManifest.xml:33:9
-	android:icon
-		ADDED from AndroidManifest.xml:34:9
-	android:theme
-		ADDED from AndroidManifest.xml:36:9
-	android:name
 		ADDED from AndroidManifest.xml:32:9
+	android:allowBackup
+		ADDED from AndroidManifest.xml:30:9
+	android:icon
+		ADDED from AndroidManifest.xml:31:9
+	android:theme
+		ADDED from AndroidManifest.xml:33:9
+	android:name
+		ADDED from AndroidManifest.xml:29:9
 meta-data#com.amap.api.v2.apikey
-ADDED from AndroidManifest.xml:37:9
+ADDED from AndroidManifest.xml:34:9
 	android:name
-		ADDED from AndroidManifest.xml:38:13
+		ADDED from AndroidManifest.xml:35:13
 	android:value
-		ADDED from AndroidManifest.xml:39:13
+		ADDED from AndroidManifest.xml:36:13
 activity#com.ldkj.portable.activitys.Single
-ADDED from AndroidManifest.xml:42:9
+ADDED from AndroidManifest.xml:38:9
 	android:label
-		ADDED from AndroidManifest.xml:45:13
+		ADDED from AndroidManifest.xml:41:13
 	android:configChanges
-		ADDED from AndroidManifest.xml:44:13
+		ADDED from AndroidManifest.xml:40:13
 	android:name
-		ADDED from AndroidManifest.xml:43:13
+		ADDED from AndroidManifest.xml:39:13
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:46:13
+ADDED from AndroidManifest.xml:42:13
 action#android.intent.action.MAIN
-ADDED from AndroidManifest.xml:47:17
+ADDED from AndroidManifest.xml:43:17
 	android:name
-		ADDED from AndroidManifest.xml:47:25
+		ADDED from AndroidManifest.xml:43:25
 category#android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:49:17
+ADDED from AndroidManifest.xml:45:17
 	android:name
-		ADDED from AndroidManifest.xml:49:27
+		ADDED from AndroidManifest.xml:45:27
 activity#com.ldkj.portable.activitys.SettingActivity
-ADDED from AndroidManifest.xml:52:9
+ADDED from AndroidManifest.xml:48:9
 	android:name
-		ADDED from AndroidManifest.xml:52:19
+		ADDED from AndroidManifest.xml:48:19
 activity#com.ldkj.portable.activitys.OfflineMapActivity
-ADDED from AndroidManifest.xml:53:9
+ADDED from AndroidManifest.xml:49:9
 	android:name
-		ADDED from AndroidManifest.xml:53:19
+		ADDED from AndroidManifest.xml:49:19
 service#com.ldkj.portable.services.ProtableService
-ADDED from AndroidManifest.xml:54:9
+ADDED from AndroidManifest.xml:51:9
 	android:name
-		ADDED from AndroidManifest.xml:54:18
+		ADDED from AndroidManifest.xml:51:18

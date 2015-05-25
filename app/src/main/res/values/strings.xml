@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">便携式设备</string>
+    <string name="app_name">零点侦测系统</string>
     <string name="scan">scan</string>
     <string name="single">single</string>
     <string name="title_activity_map">地图</string>
