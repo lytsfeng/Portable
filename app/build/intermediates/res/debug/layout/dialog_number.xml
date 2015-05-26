@@ -1,109 +1,122 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    >
 
-    <TableRow>
-        <EditText
-            android:id="@+id/txtDisplay"
-            android:layout_height="63dp"
-            android:layout_span="4"
-            android:background="@drawable/box"/>
-    </TableRow>
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <TableRow>
+        <TableRow>
 
-        <Button
-            android:id="@+id/btnSeven"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextSeven"/>
+            <EditText
+                android:id="@+id/txtDisplay"
+                android:layout_span="4"
+                android:background="@drawable/box" />
+        </TableRow>
 
-        <Button
-            android:id="@+id/btnEight"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextEight"/>
+        <TableRow>
 
-        <Button
-            android:id="@+id/btnNine"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextNine"/>
-        <Button
-            android:id="@+id/btnBack"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextback"/>
+            <Button
+                android:id="@+id/btnSeven"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextSeven" />
 
-    </TableRow>
+            <Button
+                android:id="@+id/btnEight"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextEight" />
 
-    <TableRow>
+            <Button
+                android:id="@+id/btnNine"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextNine" />
 
-        <Button
-            android:id="@+id/btnFour"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextFour"/>
+            <Button
+                android:id="@+id/btnBack"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextback" />
 
-        <Button
-            android:id="@+id/btnFive"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextFive"/>
+        </TableRow>
 
-        <Button
-            android:id="@+id/btnSix"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextSix"/>
+        <TableRow>
 
-        <Button
-            android:id="@+id/btnGHZ"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextGHZ"/>
-    </TableRow>
+            <Button
+                android:id="@+id/btnFour"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextFour" />
 
-    <TableRow>
+            <Button
+                android:id="@+id/btnFive"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextFive" />
 
-        <Button
-            android:id="@+id/btnOne"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextOne"/>
+            <Button
+                android:id="@+id/btnSix"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextSix" />
 
-        <Button
-            android:id="@+id/btnTwo"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextTwo"/>
+            <Button
+                android:id="@+id/btnGHZ"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextGHZ" />
+        </TableRow>
 
-        <Button
-            android:id="@+id/btnThree"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextThree"/>
+        <TableRow>
 
-        <Button
-            android:id="@+id/btnMHZ"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextMHZ"/>
-    </TableRow>
+            <Button
+                android:id="@+id/btnOne"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextOne" />
 
-    <TableRow>
+            <Button
+                android:id="@+id/btnTwo"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextTwo" />
 
-        <Button
-            android:id="@+id/btnDoubleZero"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextDoubleZero"/>
+            <Button
+                android:id="@+id/btnThree"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextThree" />
 
-        <Button
-            android:id="@+id/btnZero"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextZero"/>
+            <Button
+                android:id="@+id/btnMHZ"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextMHZ" />
+        </TableRow>
 
-        <Button
-            android:id="@+id/btnDot"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextDot"/>
+        <TableRow>
 
-        <Button
-            android:id="@+id/btnKHZ"
-            style="@style/NumberButtonText"
-            android:text="@string/ButtonTextKHZ"/>
-    </TableRow>
+            <Button
+                android:id="@+id/btnDoubleZero"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextDoubleZero" />
 
+            <Button
+                android:id="@+id/btnZero"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextZero" />
 
-</TableLayout><!-- From: file:/home/john/workspace/Portable/app/src/main/res/layout/dialog_number.xml -->
+            <Button
+                android:id="@+id/btnDot"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextDot" />
+
+            <Button
+                android:id="@+id/btnKHZ"
+                style="@style/NumberButtonText"
+                android:text="@string/ButtonTextKHZ" />
+        </TableRow>
+    </TableLayout>
+
+    <ListView
+        android:id="@+id/id_lv_number_tmp_freq"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:background="#223ae9ff"></ListView>
+    
+    
+    
+</LinearLayout><!-- From: file:/home/john/workspace/Portable/app/src/main/res/layout/dialog_number.xml -->

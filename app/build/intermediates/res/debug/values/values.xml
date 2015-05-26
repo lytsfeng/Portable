@@ -162,7 +162,7 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#ff000000</item>
-        <item name="android:background">@drawable/number_selector</item>
+        <item name="android:background">@drawable/map_icon_selector_broom</item>
     </style>
     <style name="StyleListView">
         <item name="android:layout_width">match_parent</item>
