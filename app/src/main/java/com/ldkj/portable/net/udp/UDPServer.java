@@ -1,9 +1,5 @@
 package com.ldkj.portable.net.udp;
 
-import android.os.Handler;
-
-import com.ldkj.portable.activitys.Base.ActivityFrame;
-import com.ldkj.portable.services.base.Callback;
 import com.ldkj.portable.services.base.UDPCallBack;
 import com.ldkj.portable.tools.Util;
 
@@ -51,6 +47,10 @@ public class UDPServer implements Runnable {
     }
     public void close() {
         isStart = false;
+        if(socket != null){
+            socket.close();
+            socket = null;
+        }
     }
     private synchronized void dataAnalysis(byte[] data, int pDatalen) {
         if (datalen == 0) {

@@ -17,6 +17,7 @@ import com.ldkj.portable.services.base.Callback;
 import com.ldkj.portable.services.base.UDPCallBack;
 import com.ldkj.portable.tools.DataConversion;
 import com.ldkj.portable.tools.MyAudioTrack;
+import com.ldkj.portable.tools.NetUtil;
 import com.ldkj.portable.tools.Util;
 import com.ldkj.portable.xmlparsers.DeviceConfigParser;
 
@@ -65,6 +66,8 @@ public class ProtableService extends Service implements UDPCallBack {
     @Override
     public void onRebind(Intent intent) {
         super.onRebind(intent);
+        client.close();
+        udpServer.close();
     }
 
     @Override
@@ -76,7 +79,6 @@ public class ProtableService extends Service implements UDPCallBack {
     public void onDestroy() {
 
         Log.e("log", "services ondestroy");
-
         super.onDestroy();
         if (client != null) {
             client.sendCmd(Util.DELETEUDP);
@@ -130,13 +132,13 @@ public class ProtableService extends Service implements UDPCallBack {
         if (client.isConn() && isSound)
             soundDataAnalysis(pDate);
     }
-    
-  
-    public void setSound(boolean isSound) {
-		this.isSound = isSound;
-	}
 
-	protected void soundDataAnalysis(Object obj) {
+
+    public void setSound(boolean isSound) {
+        this.isSound = isSound;
+    }
+
+    protected void soundDataAnalysis(Object obj) {
         byte[] _b = (byte[]) obj;
         ByteBuffer _BB = ByteBuffer.wrap(_b);
         _BB.order(ByteOrder.LITTLE_ENDIAN);
@@ -177,30 +179,56 @@ public class ProtableService extends Service implements UDPCallBack {
         }
     }
 
+    private void startUDPServer() {
+        if (udpServer == null) {
+            try {
+
+                DeviceConfig config = DeviceConfigParser.getInstance(Util.PATH_CONFIG)
+                        .getConfig();
+                SendCMD(Util.DELETEUDP);
+                udpServer = new UDPServer(config.UDPPort, ProtableService.this);
+                PortableApplication.getThreadPool().execute(udpServer);
+                SendCMD("TRAC:UDP:TAG \"" + NetUtil.getLocalIpAddress() + "\",\""
+                        + config.UDPPort + "\",AUDIO\n");
+            } catch (SocketException e) {
+                e.printStackTrace();
+            } catch (DocumentException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     class MyHandler extends Handler {
         private WeakReference<ProtableService> service;
+
         public MyHandler(ProtableService service, Looper looper) {
             super(looper);
             this.service = new WeakReference<ProtableService>(service);
         }
+
         public MyHandler(ProtableService service) {
             this.service = new WeakReference<ProtableService>(service);
         }
+
         @Override
         public void handleMessage(Message msg) {
+            int _what = msg.what;
             if (callback != null) {
-                int _what = msg.what;
                 switch (_what) {
                     case Util.MSG_NET_ERROR:
                         service.get().callback.netStatus(_what);
                         break;
                     case Util.MSG_NET_OK:
                         service.get().callback.netStatus(_what);
-                        startUDPServer();
+
                         break;
                     default:
                         break;
                 }
+            }
+            if (_what == Util.MSG_NET_OK) {
+                startUDPServer();
             }
             super.handleMessage(msg);
         }
@@ -212,18 +240,5 @@ public class ProtableService extends Service implements UDPCallBack {
         }
     }
 
-    private void startUDPServer() {
-        if (udpServer == null){
-            try {
-                udpServer = new UDPServer(9999, ProtableService.this);
-                PortableApplication.getThreadPool().execute(udpServer);
-            } catch (SocketException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-    
-    
 
 }

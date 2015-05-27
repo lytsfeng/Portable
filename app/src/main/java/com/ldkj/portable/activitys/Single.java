@@ -477,10 +477,11 @@ public class Single extends ActivityFrame implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        isReadSpac = false;
         mapManager.deactivate(); // 注销定位
         mapView.onDestroy();
         unbindService(connection);
-        isReadSpac = false;
+
         // IQThread = null;
     }
 

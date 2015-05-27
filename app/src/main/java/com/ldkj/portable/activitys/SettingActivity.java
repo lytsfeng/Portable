@@ -1,13 +1,10 @@
 package com.ldkj.portable.activitys;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.ldkj.portable.PortableApplication;
@@ -17,7 +14,6 @@ import com.ldkj.portable.beans.DeviceConfig;
 import com.ldkj.portable.services.ProtableService;
 import com.ldkj.portable.tools.Util;
 import com.ldkj.portable.xmlparsers.DeviceConfigParser;
-import com.ldkj.portable.xmlparsers.ParamParser;
 
 import org.dom4j.DocumentException;
 
@@ -96,20 +92,24 @@ public class SettingActivity extends ActivityBase {
         }
         if(isTrue){
             finish();
-            PortableApplication.getThreadPool().execute(
-                    new Runnable() {
-
-                        @Override
-                        public void run() {
-                            // TODO Auto-generated method stub
-                            startService(new Intent(SettingActivity.this, ProtableService.class));
-                            startActivity(new Intent(SettingActivity.this, Single.class));
-                        }
-                    });
+            close();
         }else {
             ShowCustonToast("填写错误,请重新填写");
         }
 
+    }
+
+    private void close() {
+        PortableApplication.getThreadPool().execute(
+                new Runnable() {
+
+                    @Override
+                    public void run() {
+                        // TODO Auto-generated method stub
+                        startService(new Intent(SettingActivity.this, ProtableService.class));
+                        startActivity(new Intent(SettingActivity.this, Single.class));
+                    }
+                });
     }
 
 
@@ -146,5 +146,14 @@ public class SettingActivity extends ActivityBase {
         return _isTrue;
     }
 
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            close();
+        }
+        return false;
+    }
 
 }

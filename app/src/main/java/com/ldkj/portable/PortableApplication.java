@@ -35,7 +35,7 @@ public class PortableApplication extends Application {
         this.context = getApplicationContext();
         threadPool = Executors.newCachedThreadPool();
         threadPool.execute(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
