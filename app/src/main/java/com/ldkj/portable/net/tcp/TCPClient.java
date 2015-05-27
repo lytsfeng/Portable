@@ -5,12 +5,13 @@ import android.util.Log;
 
 import com.ldkj.portable.tools.Util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,8 +23,8 @@ public class TCPClient implements Runnable{
     private int port = 65000;
     private int timeout = 5000;
 
-    private InputStream inputStream;
-    private OutputStream outputStream;
+    private BufferedInputStream inputStream;
+    private BufferedOutputStream outputStream;
     private boolean isconn = false;
     private Timer checkNetTimer = null;
     private Handler handler;
@@ -52,10 +53,10 @@ public class TCPClient implements Runnable{
                 socket.connect(new InetSocketAddress(InetAddress.getByName(address), port), timeout);
                 socket.setKeepAlive(true);
                 socket.setSoTimeout(5000);
-                int i = socket.getReceiveBufferSize();
-                inputStream = socket.getInputStream();
-                outputStream = socket.getOutputStream();
+                inputStream =  new BufferedInputStream(socket.getInputStream());
+                outputStream = new BufferedOutputStream(socket.getOutputStream());
                 isconn = true;
+//                sendCmd(Util.DELETEUDP);
                 handler.sendEmptyMessage(Util.MSG_NET_OK);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -68,6 +69,21 @@ public class TCPClient implements Runnable{
                 }
             }
         }
+    }
+
+
+    protected void resetInput() {
+       if(inputStream != null){
+           try {
+               int _len = inputStream.available();
+               byte[] _buf = null;
+               if (_len > 0) {
+                   _buf = readTcpData(_len);
+               }
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+       }
     }
 
     private void startTimer() {
@@ -130,66 +146,60 @@ public class TCPClient implements Runnable{
         }
         return true;
     }
-
-
-    public byte[] readCmd(String pCmd) {
-        byte[] _Data = null;
-        if (!sendCmd(pCmd)) {
-            return _Data;
-        }
-        try {
-            int _DataLength = 0;
-            byte[] buf = new byte[10240];
-            if (readData(buf, 0, 2) == 0) {
-                return _Data;
-            }
-            if (buf[0] == 35) {
-
-                if(buf[1] < 48 || buf[1] > 57){
-                    return _Data;
-                }
-                int _tmpLen = Integer.parseInt(((char) buf[1])+"");
-                if (readData(buf, 0, _tmpLen) == 0) {
-                    return _Data;
-                }
-                String _Str = new String(buf, 0, _tmpLen);
-                if (!Util.isNumeric(_Str))
-                    return _Data;
-                _DataLength = new Integer(_Str.trim()) + 2;
-                int _Rec = 0;
-                int _PerIndex = 0;
-                while (_DataLength > 0) {
-                    _Rec = readData(buf, _PerIndex, _DataLength);
-                    if (_Rec == 0) {
-                        return _Data;
+    public synchronized byte[] readCMD(String pCMD) {
+        try{
+            byte[] _Data = null;
+            resetInput();
+            if (sendCmd(pCMD)) {
+                byte[] _HeadArray = new byte[7];
+                if (readData(_HeadArray, 0, 1) == 1) {
+                    if (_HeadArray[0] == 35) {
+                        if (readData(_HeadArray, 0, 1) == 1) {
+                            if (_HeadArray[0] > 48 && _HeadArray[0] < 57) {
+                                int _dataOffset = Integer.parseInt(((char) _HeadArray[0]) + "");
+                                if (_dataOffset == readData(_HeadArray, 0, _dataOffset)) {
+                                    String _DataLengthStr = new String(_HeadArray, 0, _dataOffset).trim();
+                                    if (Util.isNumeric(_DataLengthStr)) {
+                                        int _DataLength = Integer.parseInt(_DataLengthStr) + 2;
+                                        byte[] _buf = readTcpData(_DataLength);
+                                        if (_buf != null) {
+                                            if ((_buf[_DataLength - 2] == 13) && (_buf[_DataLength - 1] == 10)) {
+                                                _Data = new byte[_DataLength - 2];
+                                                System.arraycopy(_buf, 0, _Data, 0, _DataLength - 2);
+                                                return _Data;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                    _DataLength -= _Rec;
-                    _PerIndex += _Rec;
-                }
-                if (buf[_PerIndex - 2] == 13 && buf[_PerIndex - 1] == 10) {
-                    _Data = new byte[_PerIndex - 2];
-                    System.arraycopy(buf, 0, _Data, 0, _PerIndex - 2);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            resetConn();
-            return _Data;
+            resetInput();
+            return null;
+        }catch (Exception e){
+            e.toString();
         }
-        return _Data;
+        return null;
     }
 
-    private synchronized int readData(byte[] _buf, int _PerIndex, int _DataLength) throws IOException {
-        int _Rec = 0;
 
+
+    protected int readData(byte[] _buf, int _PerIndex, int _DataLength) {
+        int _Rec = 0;
         if (inputStream == null || !isconn) {
             return _Rec;
         }
-        _Rec = inputStream.read(_buf, _PerIndex, _DataLength);
-//        inputStream.reset();
+        try {
+            _Rec = inputStream.read(_buf, _PerIndex, _DataLength);
+        } catch (SocketTimeoutException e) {
+            _Rec = 0;
+        } catch (IOException e) {
+            _Rec = 0;
+        }
         return _Rec;
     }
-
     private void checkNet() {
         try {
             socket.sendUrgentData(0xFF);
@@ -198,8 +208,6 @@ public class TCPClient implements Runnable{
             handler.sendEmptyMessage(Util.MSG_NET_ERROR);
         }
     }
-
-
     public void resetConn(){
         close();
         conn();
@@ -208,5 +216,23 @@ public class TCPClient implements Runnable{
     @Override
     public void run() {
         conn();
+    }
+
+
+    protected byte[] readTcpData(int datalength) {
+        byte[] _Data = new byte[datalength];
+        int _index = 0;
+        int readLength = 0;
+        while (readLength != datalength) {
+            int _recLen = datalength - readLength;
+            int _rec = readData(_Data, _index + readLength, _recLen);
+            if (_rec == 0) {
+                readLength = datalength;
+                _Data = null;
+            } else {
+                readLength += _rec;
+            }
+        }
+        return _Data;
     }
 }

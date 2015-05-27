@@ -45,6 +45,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Queue;
+import java.util.Timer;
 
 public class Single extends ActivityFrame implements
         DialogBase.OnNumberDialogListener, Callback {
@@ -94,6 +95,7 @@ public class Single extends ActivityFrame implements
     private Queue<Double> levels = new ArrayDeque<Double>();
     private int avgCount = 1;
     private double levelSum = 0;
+    private Timer timer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,6 +224,10 @@ public class Single extends ActivityFrame implements
      * @param pValue
      */
     private void setDemodulation(String pValue) {
+
+        sendCmd(Util.DELETEUDP);
+        sendCmd("TRAC:UDP:TAG \"" + NetUtil.getLocalIpAddress() + "\",\""
+                + config.UDPPort + "\",AUDIO\n");
         if (pValue.equalsIgnoreCase(getResources().getStringArray(
                 R.array.array_demodulation_mode)[0])) {
             sendCmd("SYSTEM:CHAnnel:AUDio 0_");
@@ -352,21 +358,7 @@ public class Single extends ActivityFrame implements
      * 开始单频侧脸
      */
     private void startSingle() {
-        sendCmd("FREQ:MODE CW");
-        sendCmd("TRAC:FEED:CONT MTRAC,NEV");
-        sendCmd("TRAC:FEED:CONT IFPAN,ALW");
-        SetValueFinish(singleBean.centFreq, R.id.center_freq, true);
-        SetValueFinish(singleBean.filterBandwidth, R.id.filter_bandwidth, true);
-        SetValueFinish(singleBean.freqBandWidth, R.id.freq_bandwidth, true);
-        SetValueFinish(singleBean.demodulationMode, R.id.demodulation_mode,
-                true);
-        SetValueFinish(singleBean.attcontrol, R.id.attenuation_control, true);
-        sendCmd("TRAC:FEED:CONT IF,ALW");
-        sendCmd("SYSTEM:CHAnnel:IF 1_");
-        sendCmd("TRAC:UDP:TAG \"" + NetUtil.getLocalIpAddress() + "\",\""
-                + config.UDPPort + "\",AUDIO\n");
-        String cmd = "SENSe:FUNCtion:ON  \"VOLT:AC\",\"FREQ:OFFS\",\"FSTR\",\"AM\",\"AM:POS\",\"AM:NEG\",\"FM\",\"FM:POS\",\"FM:NEG\",\"PM\",\"BAND\"";
-        sendCmd(cmd);
+        setParam();
         PortableApplication.getThreadPool().execute(new Runnable() {
             @Override
             public void run() {
@@ -374,10 +366,20 @@ public class Single extends ActivityFrame implements
                     if (!isMap && spectrum != null) {
                         if (isSpectrumShow) {
                             byte[] data = readCmd(Util.SPECTRUMDATA);
-                            if (data != null)
-                                handler.obtainMessage(
-                                        Util.MSG_CMD_TCP_RECEIVE_SPEC, data)
-                                        .sendToTarget();
+                            if (data != null) {
+                                drawSpec(data);
+                            }
+//                            else {
+//                                try {
+//                                    Thread.sleep(1000);
+//                                } catch (InterruptedException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                continue;
+//                            }
+                            else {
+                                continue;
+                            }
                         }
                     }
                     byte[] _IQ = readCmd(Util.IQMDATA1);
@@ -386,10 +388,36 @@ public class Single extends ActivityFrame implements
                         handler.obtainMessage(Util.MSG_CMD_TCP_RECEIVE_IQ,
                                 _newLevel).sendToTarget();
                     }
+//                    else {
+//                        try {
+//                            Thread.sleep(1000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
                 }
             }
         });
 
+    }
+
+    private void setParam() {
+        sendCmd(Util.DELETEUDP);
+        sendCmd("FREQ:MODE CW");
+        sendCmd("TRAC:FEED:CONT MTRAC,NEV");
+        sendCmd("TRAC:FEED:CONT IFPAN,ALW");
+        sendCmd("TRAC:UDP:TAG \"" + NetUtil.getLocalIpAddress() + "\",\""
+                + config.UDPPort + "\",AUDIO\n");
+        sendCmd("TRAC:FEED:CONT IF,ALW");
+        sendCmd("SYSTEM:CHAnnel:IF 1_");
+        String cmd = "SENSe:FUNCtion:ON  \"VOLT:AC\",\"FREQ:OFFS\",\"FSTR\",\"AM\",\"AM:POS\",\"AM:NEG\",\"FM\",\"FM:POS\",\"FM:NEG\",\"PM\",\"BAND\"";
+        sendCmd(cmd);
+        SetValueFinish(singleBean.centFreq, R.id.center_freq, true);
+        SetValueFinish(singleBean.filterBandwidth, R.id.filter_bandwidth, true);
+        SetValueFinish(singleBean.freqBandWidth, R.id.freq_bandwidth, true);
+        SetValueFinish(singleBean.demodulationMode, R.id.demodulation_mode,
+                true);
+        SetValueFinish(singleBean.attcontrol, R.id.attenuation_control, true);
     }
 
     /**
@@ -398,7 +426,6 @@ public class Single extends ActivityFrame implements
      * @param pObj
      */
     private void drawSpec(final Object pObj) {
-
         spectrum.bindDate(pObj);
     }
 
@@ -432,6 +459,8 @@ public class Single extends ActivityFrame implements
             case Util.MSG_NET_OK:
                 ShowMsg(getString(R.string.device_conn_ok));
                 mapManager.AddMarker(R.drawable.runenter);
+                setParam();
+                setParam();
                 if (isReadSpac == false) {
                     isReadSpac = true;
                     startSingle();

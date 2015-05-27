@@ -1,6 +1,5 @@
 package com.ldkj.portable.services;
 
-import android.R.bool;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -9,8 +8,6 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.Toast;
 
 import com.ldkj.portable.PortableApplication;
 import com.ldkj.portable.beans.DeviceConfig;
@@ -82,6 +79,7 @@ public class ProtableService extends Service implements UDPCallBack {
 
         super.onDestroy();
         if (client != null) {
+            client.sendCmd(Util.DELETEUDP);
             client.close();
             client = null;
         }
@@ -123,7 +121,7 @@ public class ProtableService extends Service implements UDPCallBack {
      * @return
      */
     public byte[] ReadCMD(String pCmd) {
-        return client.readCmd(pCmd);
+        return client.readCMD(pCmd);
     }
 
 
