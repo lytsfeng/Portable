@@ -4,9 +4,10 @@
     <eat-comment/>
     <string-array name="array_attenuation_control">
         <item>0dB</item>
-        <item>10dB</item>
-        <item>20dB</item>
-        <item>30dB</item>
+        <item>3dB</item>
+        <item>6dB</item>
+        <item>9dB</item>
+        <item>12dB</item>
     </string-array>
     <string-array name="array_demodulation_mode">
         <item>不解调</item>

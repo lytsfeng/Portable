@@ -1,15 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'portable'
+            keyPassword '12345678'
+            storeFile file('/home/john/software/store/portable.jks')
+            storePassword 'yafeng910816'
+        }
+    }
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
-
     defaultConfig {
         applicationId "com.ldkj.portable"
         minSdkVersion 14
         targetSdkVersion 19
     }
-
     buildTypes {
         release {
             minifyEnabled false

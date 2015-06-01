@@ -309,6 +309,7 @@ public class Single extends ActivityFrame implements
             case R.id.attenuation_control:
                 sendCmd("INPut:ATT " + p_Number.substring(0, p_Number.length() - 2));
                 singleBean.attcontrol = p_Number;
+                sendCmd("SENS:FREQ " + Util.getCenterFreq(this, singleBean.centFreq));
                 break;
             case R.id.filter_bandwidth:
                 sendCmd("SYSTEM:CHANNEL:BANDwidth 0, "
