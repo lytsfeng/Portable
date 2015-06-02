@@ -97,8 +97,9 @@ public class ChartView{
     }
 
     private void setXLabel() {
-        container.setxMaxValue((float) (centerFreq + bandwidth));
-        container.setxMinValue((float) (centerFreq - bandwidth));
+        float _bandwidth = (float) (bandwidth/2.0);
+        container.setxMaxValue((float) (centerFreq + _bandwidth));
+        container.setxMinValue((float) (centerFreq - _bandwidth));
     }
 
 

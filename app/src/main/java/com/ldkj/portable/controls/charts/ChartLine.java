@@ -3,7 +3,6 @@ package com.ldkj.portable.controls.charts;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -73,11 +72,24 @@ public class ChartLine extends ChartContainer {
             paint.setColor(Color.GREEN);
             paint.setStrokeWidth(2);
             for(int i = 0; i < _pointSize -1; i++){
-                canvas.drawLine(_pFlag * i + x, getPoint(pointList.get(i) - yMinValue), _pFlag * (i + 1) + x, getPoint(pointList.get(i + 1) - yMinValue), paint);
+                canvas.drawLine(_pFlag * i + x,getYPixelFromValue(pointList.get(i)), _pFlag * (i + 1) + x, getYPixelFromValue(pointList.get(i+1)), paint);
             }
         }
+
+
+        /**
+         *  int _pointSize = pointList.size();
+         float _pFlag = (width -x) / (_pointSize - 1);
+         for(int i = 0; i < _pointSize -1; i++){
+         canvas.drawLine(_pFlag * i + x,getYPixelFromValue(pointList.get(i)), _pFlag * (i + 1) + x, getYPixelFromValue(pointList.get(i+1)), paint);
+         }
+         */
     }
 
+    protected float getYPixelFromValue(float value) {
+        float _valueFlag = (height - y) / (yMaxValue - yMinValue);
+        return height - (value - yMinValue) * _valueFlag;
+    }
 
 
 

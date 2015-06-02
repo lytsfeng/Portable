@@ -564,7 +564,6 @@ public class Single extends ActivityFrame implements
                 linearLayoutSpectrum.addView(chartView);
             }
             chartView.setVisibility(View.VISIBLE);
-
             spectrum.startDraw();
             level.setTextSize(60);
             isSpectrumShow = true;
