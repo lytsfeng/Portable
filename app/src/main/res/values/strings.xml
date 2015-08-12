@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">零点侦测系统</string>
+    <string name="app_name">侦测系统</string>
     <string name="scan">scan</string>
     <string name="single">single</string>
     <string name="title_activity_map">地图</string>
@@ -42,7 +42,7 @@
     <string name="title_activity_about">关于</string>
     <string name="device_conn_err">设备断开链接</string>
     <string name="device_conn_ok">设备连接成功</string>
-    <string name="company">成都零点科技有限公司</string>
+    <string name="company"></string>
     <string name="sound">声音</string>
     <string name="install">安装</string>
     <string name="setting">设置</string>

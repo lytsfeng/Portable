@@ -111,11 +111,11 @@
     <string name="ButtonTextback"><![CDATA[<<]]></string>
     <string name="about">关于</string>
     <string name="action_settings">Settings</string>
-    <string name="app_name">零点侦测系统</string>
+    <string name="app_name">侦测系统</string>
     <string name="attenuation_control">衰减控制</string>
     <string name="cancel">取消</string>
     <string name="center_freq">中心频率</string>
-    <string name="company">成都零点科技有限公司</string>
+    <string name="company"/>
     <string name="demodulation_mode">解调模式</string>
     <string name="device_conn_err">设备断开链接</string>
     <string name="device_conn_ok">设备连接成功</string>
