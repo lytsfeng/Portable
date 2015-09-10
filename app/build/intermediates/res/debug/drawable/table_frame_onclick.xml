@@ -2,4 +2,4 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
        android:shape="rectangle" >
     <solid android:color="#4e000000" />
-</shape><!-- From: file:/home/john/workspace/Portable/app/src/main/res/drawable/table_frame_onclick.xml -->
+</shape><!-- From: file:/home/john/workspaces/android/Portable/app/src/main/res/drawable/table_frame_onclick.xml -->

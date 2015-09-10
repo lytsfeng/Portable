@@ -204,13 +204,26 @@ public class Util {
      * @return
      */
     public static double getLevel(byte[] pDate) {
+
+//        int _len = _IQ.length / 2;
+//        double _TmpCount = 0;
+//        for(int i = 0; i < _len; i++) {
+//            _TmpCount += Math.pow(_IQ[i], 2) + Math.pow(_IQ[_len + i], 2);
+//        }
+//        return 10 * Math.log10(_TmpCount/(2*_len));
+
         short[] _IQ = CIOUtils.getShort(pDate);
-        int _len = _IQ.length / 2;
-        double _TmpCount = 0;
-        for(int i = 0; i < _len; i++) {
-            _TmpCount += Math.pow(_IQ[i], 2) + Math.pow(_IQ[_len + i], 2);
+        double power = 0;
+        int index = _IQ.length / 2;
+        for (int i = 0; i < index; i++)
+        {
+            double idata = _IQ[i] / 32768.0;
+            double qdata = _IQ[index + i] / 32768.0;
+            power += (idata * idata + qdata * qdata);
         }
-        return 10 * Math.log10(_TmpCount/(2*_len));
+        return 10 * Math.log10(power / index) + 107;
+
+
     }
 
     /**

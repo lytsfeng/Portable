@@ -10,4 +10,4 @@
         android:numColumns="5"
         android:horizontalSpacing="1dp"
         ></GridView>
-</LinearLayout><!-- From: file:/home/john/workspace/Portable/app/src/main/res/layout/dialog_select_grid.xml -->
+</LinearLayout><!-- From: file:/home/john/workspaces/android/Portable/app/src/main/res/layout/dialog_select_grid.xml -->

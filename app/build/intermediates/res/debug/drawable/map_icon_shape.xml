@@ -6,4 +6,4 @@
         android:width="1dp"
         android:color="#6a4c4c4c" />
     <padding android:left="15dp" android:top="5dp" android:right="15dp" android:bottom="5dp" />
-</shape><!-- From: file:/home/john/workspace/Portable/app/src/main/res/drawable/map_icon_shape.xml -->
+</shape><!-- From: file:/home/john/workspaces/android/Portable/app/src/main/res/drawable/map_icon_shape.xml -->

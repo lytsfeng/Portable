@@ -7,4 +7,4 @@
         android:id="@+id/grid_list_tv"
         style="@style/GridButtonText"
         />
-</LinearLayout><!-- From: file:/home/john/workspace/Portable/app/src/main/res/layout/grid_item.xml -->
+</LinearLayout><!-- From: file:/home/john/workspaces/android/Portable/app/src/main/res/layout/grid_item.xml -->
